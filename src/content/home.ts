@@ -1,14 +1,3 @@
-import ethanCole from '@/assets/images/hero/ethan-cole.png'
-import slide1a from '@/assets/images/hero/slide-1a.png'
-import slide1b from '@/assets/images/hero/slide-1b.png'
-import slide2a from '@/assets/images/hero/slide-2a.png'
-import slide2b from '@/assets/images/hero/slide-2b.png'
-import slide3a from '@/assets/images/hero/slide-3a.png'
-import slide3b from '@/assets/images/hero/slide-3b.png'
-import slide4a from '@/assets/images/hero/slide-4a.png'
-import slide4b from '@/assets/images/hero/slide-4b.png'
-import slide5a from '@/assets/images/hero/slide-5a.png'
-import slide5b from '@/assets/images/hero/slide-5b.png'
 import quotient from '@/assets/images/clients/quotient.png'
 import capsule from '@/assets/images/clients/capsule.png'
 import featherdev from '@/assets/images/clients/featherdev.png'
@@ -17,44 +6,17 @@ import epicurious from '@/assets/images/clients/epicurious.png'
 import sisyphus from '@/assets/images/clients/sisyphus.png'
 import commandR from '@/assets/images/clients/command-r.png'
 import galileo from '@/assets/images/clients/galileo.png'
+import { contactCta } from './site'
 import type { ComparisonRow, Picture, Stat, WordPair } from './types'
 
 export const hero = {
-  title: 'Creative Velocity.',
-  intro: 'Empowering startups and enterprises with strategy, design, and technology to create unforgettable digital experiences.',
-  booking: {
-    title: 'Book a Quick Call',
-    host: '/with Ethan Cole',
-    href: 'https://cal.com/',
-    portrait: {
-      src: ethanCole,
-      alt: 'Portrait of man with glasses under teal and orange studio lighting',
-      position: '50.6% 15.2%',
-    } satisfies Picture,
-  },
-  /** Each slide is a pair of photos sharing one arched frame. */
-  slides: [
-    [
-      { src: slide1a, alt: 'Bright modern living room with sunlight, armchair, and minimalist decor.' },
-      { src: slide1b, alt: 'Person wearing a futuristic glowing visor with motion blur lighting.' },
-    ],
-    [
-      { src: slide2a, alt: 'Woman walking through colorful city lights with motion blur effect.' },
-      { src: slide2b, alt: 'Minimalist workspace with laptop on desk in a sunlit room.' },
-    ],
-    [
-      { src: slide3a, alt: 'Abstract colorful light explosion with soft blurred glow.' },
-      { src: slide3b, alt: 'Creative workspace with design sketches, stationery, and mood board.' },
-    ],
-    [
-      { src: slide4a, alt: 'Bright modern office interior with large windows and plants.' },
-      { src: slide4b, alt: 'Silhouette portrait with vibrant neon red and blue lighting.' },
-    ],
-    [
-      { src: slide5a, alt: 'Decorative white blossom tree installation in a modern space.' },
-      { src: slide5b, alt: 'Runner in motion captured with dynamic blur on warm background.' },
-    ],
-  ] satisfies [Picture, Picture][],
+  /** The company name, one entry per word: "Bro AI Hai". The middle word gets the orange chip. */
+  name: ['Bro', 'AI', 'Hai'],
+  /** Typed out letter by letter; the words in `accent` take the brand orange. */
+  tagline: { text: 'The Bro Behind Your Next Big Idea', accent: ['Bro'] },
+  /** The only two calls to action in the hero. */
+  projects: { label: 'View our projects', href: '/projects' },
+  contact: { label: 'Contact', href: contactCta.href },
 }
 
 export const clients = {
@@ -118,9 +80,10 @@ export const servicesIntro = {
 }
 
 export const capabilitiesIntro = {
-  label: 'What We Build',
-  title: 'Everything You Need to Turn an Idea Into Something Real',
-  body: 'Websites, apps, SaaS products, AI systems and custom software, designed and built by one team.',
+  label: 'Services',
+  /** The headline's three lines; the last one takes the accent. */
+  lines: ['Everything', 'a product', 'needs.'],
+  cta: { label: 'Start a project', href: '#contact' },
 }
 
 export const workIntro = {
@@ -133,7 +96,6 @@ export const workIntro = {
 export const testimonialsIntro = {
   label: 'Testimonial',
   title: 'Clients Words',
-  cta: { label: 'Read About Us', href: '/#about' },
 }
 
 export const stackIntro = {

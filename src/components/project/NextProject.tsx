@@ -19,7 +19,7 @@ export function NextProject({ next, closing, cta }: Props) {
         <SectionHeading label="Next Project" title={next.title} className={styles.heading} />
       </div>
       <div className={styles.card}>
-        <ProjectCard project={next} />
+        <ProjectCard project={next} sizes="(max-width: 809.98px) calc(100vw - 40px), (max-width: 1309.98px) calc(100vw - 60px), 1250px" />
       </div>
       <div className={styles.closing}>
         <p className={`t-h3 ${styles.closingText}`}>{closing}</p>

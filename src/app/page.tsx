@@ -5,7 +5,6 @@ import { Impact } from '@/components/home/Impact'
 import { Services } from '@/components/home/Services'
 import { Capabilities } from '@/components/home/Capabilities'
 import { Stack } from '@/components/home/Stack'
-import { Testimonials } from '@/components/home/Testimonials'
 import { ProjectShowcase } from '@/components/projects/ProjectShowcase'
 import { FaqSection } from '@/components/faq/FaqSection'
 import { wordLines, workIntro } from '@/content/home'
@@ -30,7 +29,6 @@ export default function HomePage() {
         cta={workIntro.cta}
       />
       <Stack />
-      <Testimonials />
       <FaqSection />
     </>
   )

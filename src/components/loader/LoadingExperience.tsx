@@ -1,9 +1,7 @@
 'use client'
 
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { site } from '@/content/site'
 import { useReducedMotion } from '@/lib/hooks'
 import styles from './LoadingExperience.module.css'
 
@@ -23,7 +21,8 @@ type Phase = 'initial' | 'enter' | 'settle' | 'screen' | 'reveal' | 'complete'
 const ORDER: Phase[] = ['initial', 'enter', 'settle', 'screen', 'reveal', 'complete']
 
 // ms from mount at which each phase begins
-const AT = { settle: 1000, screen: 2500, reveal: 5000, complete: 6700, release: 7400 }
+// the dive into the screen lands at about 4450; the page starts lifting as it nears the end, with no hold on the screen
+const AT = { settle: 1000, screen: 2500, reveal: 4100, complete: 5400, release: 5700 }
 
 const PATHS = [
   'M142 18 L378 36 L348 239 L115 217 Z', // lid
@@ -38,8 +37,8 @@ const PATHS = [
 const SCREEN = 'M153 31 L366 47 L338 227 L128 208 Z'
 
 const LABELS = {
-  left: ['A CREATIVE STUDIO FOR', 'UNFORGETTABLE EXPERIENCES'],
-  right: ['STRATEGY AND DESIGN', 'CRAFTED WITH TECHNOLOGY'],
+  left: ['YOU BRING THE IDEA.', 'WE TURN IT INTO SOMETHING REAL.', 'BUILT WITH YOU, FROM FIRST THOUGHT', 'TO FINAL PRODUCT.'],
+  right: ["YOUR IDEA DOESN'T NEED MORE WAITING.", 'IT NEEDS SOMEONE TO BUILD IT.', 'WE TURN YOUR VISION INTO SOMETHING', 'YOU CAN SEE, USE, AND GROW.'],
 }
 
 const vars = (v: Record<string, number>) => v as unknown as CSSProperties
@@ -67,6 +66,20 @@ export function LoadingExperience() {
 
     const timers: number[] = []
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms))
+
+    // Every run of the loader starts at the hero: forget where the visitor left
+    // off (browser scroll restoration) and drop any #section from the address.
+    const toHero = () => {
+      if (window.location.hash) {
+        window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search)
+      }
+      window.scrollTo(0, 0)
+    }
+    window.history.scrollRestoration = 'manual'
+    toHero()
+    // the browser can restore its saved position after mount, so settle it again
+    at(60, toHero)
+    at(400, toHero)
 
     // Aim the dive: put the screen's centre at the viewport centre and scale
     // until its bezel covers the viewport.
@@ -105,6 +118,7 @@ export function LoadingExperience() {
     at(AT.screen, () => setPhase('screen'))
     if (hold === 'screen') return clear
     at(AT.reveal, () => {
+      toHero()
       setPhase('reveal')
       html.classList.remove('is-loading')
       html.classList.add('is-revealing')
@@ -169,13 +183,6 @@ export function LoadingExperience() {
       ))}
 
       <div className={styles.progress} />
-
-      <div className={styles.brand}>
-        <span className={styles.mark}>
-          <Image src={site.logo.src} alt="" height={44} className={styles.markImage} />
-        </span>
-        <Image src={site.wordmark.src} alt="" height={44} className={styles.wordmark} />
-      </div>
     </div>
   )
 }

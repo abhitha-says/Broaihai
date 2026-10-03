@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { contact, footer, site, socials } from '@/content/site'
+import { contact, footer, site } from '@/content/site'
 import { BackToTop } from './BackToTop'
 import styles from './Footer.module.css'
 
@@ -12,23 +12,18 @@ export function Footer() {
 
       <div className={styles.container}>
         <div className={styles.top}>
-          <ul className={styles.socials}>
-            {socials.map((s) => (
-              <li key={s.label}>
-                <a href={s.href} className={styles.social} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
-                  <Image src={s.icon.src} alt="" width={20} height={20} className={styles.socialIcon} />
-                </a>
-              </li>
-            ))}
-          </ul>
           <dl className={styles.details}>
             {details.map((d) => (
               <div key={d.label} className={styles.detail}>
                 <dt className={`t-small ${styles.detailLabel}`}>{d.label}</dt>
                 <dd className={`t-h5 ${styles.detailValue}`}>
-                  <a href={d.href} {...(d.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                    {d.value}
-                  </a>
+                  {d.href ? (
+                    <a href={d.href} {...(d.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                      {d.value}
+                    </a>
+                  ) : (
+                    d.value
+                  )}
                 </dd>
               </div>
             ))}

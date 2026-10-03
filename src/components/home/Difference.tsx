@@ -8,11 +8,11 @@ import styles from './Difference.module.css'
 
 /** Where each row's pill sits in its panel; the two panels read row for row. */
 const LAYOUT = [
-  { y: 27, depth: 26 },
-  { y: 40, depth: -18 },
-  { y: 53, depth: 34 },
-  { y: 66, depth: -24 },
-  { y: 79, depth: 20 },
+  { y: 27 },
+  { y: 40 },
+  { y: 53 },
+  { y: 66 },
+  { y: 79 },
 ]
 const TYPICAL = [
   { x: 56, rotate: 7, tone: 'glassDark' },
@@ -34,14 +34,14 @@ const broAiPills: PillSpec[] = difference.rows.map((row, i) => ({ text: row.broA
 
 export function Difference() {
   return (
-    <Section id="about" className={styles.container}>
+    <Section className={styles.container}>
       <div className={styles.head}>
         <SectionHeading label={difference.label} title={difference.title} align="center" />
         <p className={`t-h5 ${styles.body}`}>{difference.body}</p>
       </div>
       <ComparisonGrid>
         <ComparisonPanel title={difference.typical} variant="typical" pills={typicalPills} />
-        <ComparisonPanel title={difference.broAi} variant="broAi" pills={broAiPills} delay={180} />
+        <ComparisonPanel title={difference.broAi} variant="broAi" pills={broAiPills} />
       </ComparisonGrid>
     </Section>
   )

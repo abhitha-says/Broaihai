@@ -31,6 +31,16 @@
   width: min-content;
 }
 
+.soon {
+  font-family: var(--font-sans);
+  font-feature-settings: var(--font-features);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.5em;
+  white-space: nowrap;
+  color: var(--color-black);
+}
+
 .label {
   width: 240px;
   color: var(--color-text);

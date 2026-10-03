@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image, { getImageProps } from 'next/image'
 import { useEffect, useRef, ViewTransition } from 'react'
 import { useReducedMotion } from '@/lib/hooks'
 import type { DetailedProject } from '@/content/types'
@@ -109,13 +109,16 @@ export function ProjectHero({ project }: { project: DetailedProject }) {
     { label: 'Year', value: String(project.year) },
   ]
 
+  // the poster goes through the image optimizer too: the raw master is several times heavier
+  const poster = project.heroVideo ? getImageProps({ src: image.src, alt: '', width: 960, quality: 90 }).props.src : undefined
+
   const screen = (
     <>
       {project.heroVideo ? (
         <video
           className={styles.video}
           src={project.heroVideo}
-          poster={image.src.src}
+          poster={poster}
           aria-label={image.alt}
           autoPlay
           loop
@@ -130,6 +133,7 @@ export function ProjectHero({ project }: { project: DetailedProject }) {
           fill
           priority
           sizes="(max-width: 809.98px) calc(100vw - 40px), 50vw"
+          quality={90}
           style={image.position ? { objectPosition: image.position } : undefined}
         />
       )}

@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
     deviceSizes: [390, 640, 810, 1080, 1200, 1440, 1920, 2560],
     imageSizes: [40, 64, 100, 150, 200, 300, 400],
     formats: ['image/avif', 'image/webp'],
+    // Next 16 only serves qualities on this list (default [75]). The project screens
+    // are text-heavy captures, so they ask for 90 to keep type edges crisp.
+    qualities: [75, 90],
   },
   async headers() {
     return [{ source: '/(.*)', headers: securityHeaders }]

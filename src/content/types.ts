@@ -58,16 +58,16 @@ export type Service = {
   background: Picture
 }
 
-export type ServiceVisual = 'web' | 'mobile' | 'saas' | 'ai' | 'software' | 'design'
-
+/** One layer of the Capabilities stack: a plate on the right, a state of the copy on the left. */
 export type Capability = {
   number: string
-  title: string
-  /** The one-line summary that opens the card. */
-  tagline: string
+  /** The name in the bottom navigation and on the left. */
+  name: string
+  /** The name printed on the plate, one entry per line. */
+  plate: string[]
   description: string
+  metric: { value: string; label: string }
   tags: string[]
-  visual: ServiceVisual
 }
 
 export type Stat = {

@@ -1,7 +1,7 @@
 import webDesignBg from '@/assets/images/services/web-design-bg.png'
-import webDesign from '@/assets/images/services/web-design.png'
+import webDesign from '@/assets/images/services/web-design-desk.webp'
 import brandIdentityBg from '@/assets/images/services/brand-identity-bg.png'
-import brandIdentity from '@/assets/images/services/brand-identity.png'
+import mobileApp from '@/assets/images/services/mobile-app.png'
 import uiUxStrategyBg from '@/assets/images/services/ui-ux-strategy-bg.png'
 import uiUxStrategy from '@/assets/images/services/ui-ux-strategy.png'
 import creativeDevelopmentBg from '@/assets/images/services/creative-development-bg.png'
@@ -13,13 +13,13 @@ export const services: Service[] = [
     title: 'Web Design',
     description: 'We design high-performing, striking websites that blend creativity, usability, and strategy to boost engagement.',
     background: { src: webDesignBg, alt: '' },
-    image: { src: webDesign, alt: 'Cyclist riding fast with motion blur representing speed and performance' },
+    image: { src: webDesign, alt: 'Designer desk in warm light with a monitor showing a modern website layout', position: '62% 50%' },
   },
   {
-    title: 'Brand Identity',
-    description: 'We craft distinctive visual identities that express your purpose, elevate recognition, strengthen impact, and connect emotionally with audiences.',
+    title: 'Mobile App',
+    description: 'We design and build iOS and Android apps that feel effortless to use, from first screen to store release.',
     background: { src: brandIdentityBg, alt: '' },
-    image: { src: brandIdentity, alt: 'Luxury perfume bottle on pedestal surrounded by plants representing brand identity' },
+    image: { src: mobileApp, alt: 'Smartphone showing a finance app on a stone pedestal in warm light', position: '58% 50%' },
   },
   {
     title: 'UI/UX Strategy',

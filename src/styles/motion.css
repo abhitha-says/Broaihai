@@ -25,9 +25,6 @@ html.is-revealing {
 html.is-loading .appear {
   animation-play-state: paused;
 }
-html.is-revealing .appear {
-  animation-delay: calc(var(--appear-delay, 0s) + 0.25s);
-}
 
 @media (prefers-reduced-motion: reduce) {
   .appear {

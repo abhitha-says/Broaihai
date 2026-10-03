@@ -1,4 +1,8 @@
-import heroStudio from '@/assets/images/projects/hero-studio.png'
+import heroStudio from '@/assets/images/projects/hero-studio.jpg'
+import avpHero from '@/assets/images/projects/avp/hero.jpg'
+import avpWide from '@/assets/images/projects/avp/wide.jpg'
+import avpShot1 from '@/assets/images/projects/avp/shot-1.jpg'
+import avpShot2 from '@/assets/images/projects/avp/shot-2.jpg'
 import calmtreeHero from '@/assets/images/projects/calmtree/hero.jpg'
 import calmtreeShot1 from '@/assets/images/projects/calmtree/shot-1.jpg'
 import calmtreeShot2 from '@/assets/images/projects/calmtree/shot-2.jpg'
@@ -21,6 +25,40 @@ import type { DetailedProject, Picture, Project } from './types'
  * client sites with a case study (every screen is a capture of the live site).
  */
 export const projects: Project[] = [
+  {
+    slug: 'avp',
+    title: 'AVP',
+    year: 2026,
+    category: 'AI Voice Assistant',
+    image: { src: avpHero, alt: 'AVP Hospital voice intake: "Now the patient just talks" above a glowing voice orb and the language choices' },
+    heroVideo: '/videos/avp.mp4',
+    // the cool teal of the voice orb
+    wordColors: ['#0f3d4a', '#3aa7b8'],
+    detail: {
+      tagline: 'An AI digital receptionist that checks patients in by voice.',
+      client: 'AVP Hospital, Coimbatore',
+      overview:
+        'AVP is an AI-powered digital receptionist for hospitals that lets patients interact directly with an AI through speech. It captures essential patient details through natural conversation, converts speech to text and text to speech, and automatically organizes the collected information into an Excel sheet, reducing manual reception work and making patient intake faster and more efficient. We built it in 2026 as a college project, around AVP, a hospital in Coimbatore.',
+      challenge:
+        'Reception desks ask every patient the same questions and type the answers in by hand. That is slow for the patient and repetitive work for the staff.',
+      approach:
+        'The patient simply talks. AVP listens, turns their speech into text, answers back out loud, and fills in the intake record as the conversation goes. Once the details are collected they are organised into an Excel sheet, so nothing has to be typed at the desk.',
+      services: ['Product design', 'Voice AI', 'Speech to text', 'Text to speech', 'Excel export'],
+      features: [
+        { title: 'Talk, don’t type', body: 'Patients answer in natural conversation instead of filling in a form.' },
+        { title: 'Speech both ways', body: 'Speech is converted to text, and replies are spoken back with text to speech.' },
+        { title: 'Intake fills itself', body: 'The record completes live as the patient speaks, one detail at a time.' },
+        { title: 'Straight to Excel', body: 'Collected details are organised automatically into an Excel sheet.' },
+      ],
+      results:
+        'A working voice check-in that takes the patient’s details by conversation and organises them into an Excel sheet, so reception staff type less and intake is faster.',
+      gallery: [
+        { src: avpWide, alt: 'AVP: the conversation on the left while the intake record fills itself on the right' },
+        { src: avpShot1, alt: 'AVP: the consultation scribe turning a doctor’s conversation into a structured clinical note' },
+        { src: avpShot2, alt: 'AVP Hospital: "Check-in by voice. Notes without typing." with the language choices' },
+      ],
+    },
+  },
   {
     slug: 'calmtree',
     title: 'Calmtree',
@@ -102,9 +140,10 @@ export const projects: Project[] = [
     image: {
       src: humanSignalsHero,
       alt: 'Human Signals homepage: "Because people are more than data" over a misty mountain landscape',
-      // the statement sits on the left; keep it in the card's crop
-      position: '20% 50%',
+      // the statement on the left and the figure on the right both stay in the card's crop
+      position: '25% 50%',
     },
+    heroVideo: '/videos/human-signals.mp4',
     detail: {
       tagline: 'Because people are more than data.',
       website: 'https://www.humansignals.in/',
@@ -139,6 +178,7 @@ export const projects: Project[] = [
     year: 2026,
     category: 'Web Design',
     image: { src: humanSignals1Hero, alt: 'Human Signals 1 homepage: "Human psychology, behaviour, choices, signals" in acid-green type among photographs on dark green' },
+    heroVideo: '/videos/human-signals-1.mp4',
     detail: {
       tagline: 'A photographic, dark-green edition of Human Signals.',
       website: 'https://human-signals-delta.vercel.app/',

@@ -18,12 +18,40 @@
   text-wrap: balance;
 }
 
+.track {
+  width: 100%;
+}
+
 .grid {
-  --p: 0.5;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
   width: 100%;
+}
+
+/*
+ * Wide screens pin the pair while the timeline plays: the track is the stage plus a
+ * short run of scroll, and the stage sticks under the header for that run.
+ */
+.track[data-mode='pin'] {
+  --run: 150svh;
+  height: calc(100svh - 120px + var(--run));
+}
+
+.track[data-mode='pin'] .grid {
+  position: sticky;
+  top: 96px;
+  height: calc(100svh - 120px);
+}
+
+.track[data-mode='pin'] .column {
+  min-height: 0;
+}
+
+.track[data-mode='pin'] .panel {
+  flex: 1 1 0;
+  min-height: 0;
+  aspect-ratio: auto;
 }
 
 .column {
@@ -35,6 +63,14 @@
 
 .panelTitle {
   text-align: center;
+  /* revealed by clip, so the line has room for its descenders */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  will-change: clip-path, translate, opacity;
+}
+
+.track[data-mode='pin'] .column {
+  gap: 20px;
 }
 
 .panel {
@@ -65,7 +101,7 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(48px);
-  translate: 0 calc((var(--p) - 0.5) * var(--shift, 60) * 1px);
+  translate: 0 calc((var(--p, 0.5) - 0.5) * var(--shift, 60) * 1px);
   will-change: translate;
 }
 
@@ -141,29 +177,44 @@
   translate: -50% -50%;
 }
 
-/* Entrance: each pill drops in from above, tilted the other way, with a small bounce. */
+/* the entrance is written per frame by ComparisonGrid; this layer only needs to be promoted */
 .drop {
   display: block;
-  transition:
-    translate 1000ms var(--spring-default),
-    rotate 1000ms var(--spring-default),
-    scale 1000ms var(--spring-default),
-    opacity 400ms ease-out;
-  transition-delay: calc(var(--panel-delay, 0ms) + var(--delay, 0ms));
+  will-change: transform, opacity;
 }
 
-
-[data-phase='armed'] .drop {
-  translate: 0 -140px;
-  rotate: calc(var(--rot) * -2);
-  scale: 0.9;
-  opacity: 0;
-}
-
-.drift {
+/* idle: once the composition has settled each pill breathes on its own period, a pixel or two */
+.bob {
   display: block;
-  translate: 0 calc((var(--p) - 0.5) * var(--depth) * 1px);
-  will-change: translate;
+}
+
+[data-done] .bob {
+  animation: bob var(--bob) ease-in-out var(--bob-delay) infinite alternate;
+}
+
+@keyframes bob {
+  to {
+    transform: translate3d(0, -3px, 0);
+  }
+}
+
+/* atmosphere: the panel's glow lifts a touch as each message lands, then eases back */
+.panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: calc(var(--pulse, 0) * 0.5);
+  mix-blend-mode: soft-light;
+}
+
+.broAi::after {
+  background: radial-gradient(60% 50% at 52% 46%, var(--color-accent), transparent 70%);
+}
+
+.typical::after {
+  background: radial-gradient(60% 50% at 40% 40%, #7f8cff, transparent 70%);
 }
 
 .pill {
@@ -191,21 +242,33 @@
 .glassDark {
   color: #fff;
   background: rgb(95 95 95 / 0.6);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.14),
+    0 14px 30px -16px rgb(0 0 0 / 0.55);
 }
 
 .glassLight {
   color: var(--color-ink);
-  background: rgb(255 255 255 / 0.65);
+  background: rgb(255 255 255 / 0.68);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.5),
+    0 14px 30px -16px rgb(25 25 25 / 0.35);
 }
 
 .accent {
   color: #fff;
   background: var(--color-accent);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 16px 32px -14px rgb(255 83 31 / 0.65);
 }
 
 .ink {
   color: #fff;
   background: #000;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 16px 32px -14px rgb(0 0 0 / 0.6);
 }
 
 @media (max-width: 809.98px) {
@@ -232,13 +295,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .drop,
   .pill {
     transition: none;
   }
 
-  .blob,
-  .drift {
+  .blob {
     translate: none;
+  }
+
+  [data-done] .bob {
+    animation: none;
   }
 }

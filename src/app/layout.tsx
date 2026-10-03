@@ -3,9 +3,9 @@ import localFont from 'next/font/local'
 import './globals.css'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { LoadingExperience } from '@/components/loader/LoadingExperience'
 import { SmoothScroll } from '@/components/layout/SmoothScroll'
 import { CursorFollower } from '@/components/layout/CursorFollower'
-import { LoadingExperience } from '@/components/loader/LoadingExperience'
 import { site } from '@/content/site'
 
 const tasa = localFont({

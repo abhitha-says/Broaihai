@@ -1,7 +1,6 @@
 import { impact } from '@/content/home'
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { Counter } from './Counter'
 import styles from './Impact.module.css'
 
 export function Impact() {
@@ -12,7 +11,7 @@ export function Impact() {
         {impact.stats.map((stat) => (
           <li key={stat.label} className={styles.card}>
             <div className={styles.body}>
-              <Counter value={stat.value} prefix={stat.prefix} />
+              <p className={styles.soon}>Coming soon</p>
               <p className={`t-h5 ${styles.label}`}>{stat.label}</p>
             </div>
             <span className={styles.dot} aria-hidden />

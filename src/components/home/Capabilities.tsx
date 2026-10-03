@@ -1,196 +1,209 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { capabilitiesIntro } from '@/content/home'
-import { capabilities as services } from '@/content/capabilities'
-import { Section } from '@/components/ui/Section'
-import { SectionHeading } from '@/components/ui/SectionHeading'
+import { capabilities } from '@/content/capabilities'
+import { ArrowButton } from '@/components/ui/ArrowButton'
 import { scrollToY } from '@/components/layout/SmoothScroll'
+import { useReducedMotion } from '@/lib/hooks'
 import { clamp01, useScrollFrame } from '@/lib/scroll'
-import { ServiceDrawing } from './ServiceVisual'
 import styles from './Capabilities.module.css'
 
 /*
- * The choreography, all derived from one scroll progress p (0 at the top of the
- * track, 1 at the bottom). The track is LEAD + (N - 1) units long; unit k brings
- * card k up, spending TRANSITION of it moving and the rest holding so each card
- * gets a moment on screen. Cards already in place recede by how many cards have
- * arrived on top of them (their "depth"), so the whole stack moves as one.
+ * One master progress p (0 at the top of the track, 1 at the bottom) becomes a
+ * continuous layer index `a` (0 = first service, 5 = last). Everything on screen
+ * is a function of `a` alone:
+ *
+ *   plate i   pulled out along the screen's horizontal and turned to the accent
+ *             by lift(i - a) = 1 - |i - a|, so two plates share the move mid-way
+ *   copy i    fades and drifts by the same distance from `a`
+ *   nav item  lit for the nearest index
+ *
+ * `a` rests on whole numbers for part of every step (DWELL) so each service has
+ * a moment on screen, and eases between them. Scrolling back replays it exactly.
  */
-const COUNT = services.length
-const LEAD = 0.25
-const TRANSITION = 0.62
-const TOTAL = LEAD + COUNT - 1
-const PEEK = 22
-const SHRINK = 0.04
-const STAGE_QUERY = '(min-width: 810px) and (prefers-reduced-motion: no-preference)'
+const COUNT = capabilities.length
+const DWELL = 0.16
 
 const smooth = (t: number) => t * t * (3 - 2 * t)
 
-function subscribeStage(onChange: () => void) {
-  const mq = matchMedia(STAGE_QUERY)
-  mq.addEventListener('change', onChange)
-  return () => mq.removeEventListener('change', onChange)
-}
-
-/** True where the pinned, scroll-driven stage runs; elsewhere the cards stack in normal flow. */
-function useStage() {
-  return useSyncExternalStore(
-    subscribeStage,
-    () => matchMedia(STAGE_QUERY).matches,
-    () => false,
-  )
+/** Scroll progress through the track -> layer index. */
+function layerAt(p: number) {
+  const raw = clamp01(p) * (COUNT - 1)
+  const whole = Math.min(Math.floor(raw), COUNT - 2)
+  const f = clamp01((raw - whole - DWELL) / (1 - 2 * DWELL))
+  return whole + smooth(f)
 }
 
 export function Capabilities() {
-  const live = useStage()
-  const [active, setActive] = useState(0)
-  const activeRef = useRef(0)
+  const reduced = useReducedMotion()
   const track = useRef<HTMLDivElement>(null)
-  const stack = useRef<HTMLUListElement>(null)
-  const cards = useRef<(HTMLLIElement | null)[]>([])
-  const fill = useRef<HTMLSpanElement>(null)
-  const meter = useRef<HTMLSpanElement>(null)
+  const plates = useRef<(HTMLDivElement | null)[]>([])
+  const copies = useRef<(HTMLDivElement | null)[]>([])
+  const tabs = useRef<(HTMLButtonElement | null)[]>([])
+  const last = useRef({ a: -1, near: -1 })
 
-  const frame = useCallback(() => {
-    const trackEl = track.current
-    const stackEl = stack.current
-    if (!trackEl || !stackEl) return
-    const vh = window.innerHeight
-    const rect = trackEl.getBoundingClientRect()
-    const range = Math.max(1, trackEl.offsetHeight - vh)
-    const p = clamp01(-rect.top / range)
-    const raw = p * TOTAL
-    const travel = vh - stackEl.offsetTop
-
-    // each card's arrival, 0 (below the stage) to 1 (in place); card 0 is there from the start
-    const arrival = services.map((_, i) => (i === 0 ? 1 : smooth(clamp01((raw - LEAD - (i - 1)) / TRANSITION))))
-
-    let front = 0
-    arrival.forEach((a, i) => {
-      if (a > 0.5) front = i
-      const el = cards.current[i]
-      if (!el) return
-      let depth = 0
-      for (let j = i + 1; j < COUNT; j++) depth += arrival[j] ?? 0
-      const peek = PEEK * Math.min(depth, 3) + PEEK * 0.3 * Math.max(depth - 3, 0)
-      const scale = (1 - SHRINK * Math.min(depth, 3) - SHRINK * 0.25 * Math.max(depth - 3, 0)) * (0.965 + 0.035 * a)
-      const y = (1 - a) * travel - peek
-      el.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`
-      el.style.opacity = String(clamp01(5 - depth))
-      el.style.setProperty('--dim', (Math.min(depth, 4) * 0.045).toFixed(3))
-      el.style.visibility = a === 0 ? 'hidden' : 'visible'
-    })
-
-    if (fill.current) fill.current.style.transform = `scaleY(${p.toFixed(4)})`
-    if (meter.current) meter.current.style.transform = `scaleX(${p.toFixed(4)})`
-    if (front !== activeRef.current) {
-      activeRef.current = front
-      setActive(front)
+  const apply = useCallback((a: number) => {
+    if (Math.abs(a - last.current.a) < 0.0005) return
+    last.current.a = a
+    for (let i = 0; i < COUNT; i++) {
+      const r = i - a
+      const lift = Math.max(0, 1 - Math.abs(r))
+      const plate = plates.current[i]
+      if (plate) {
+        plate.style.setProperty('--b', lift.toFixed(4))
+        plate.style.setProperty('--act', Math.pow(lift, 0.8).toFixed(4))
+      }
+      const copy = copies.current[i]
+      if (copy) {
+        const o = smooth(clamp01(1 - Math.abs(r) * 1.7))
+        copy.style.opacity = o.toFixed(3)
+        copy.style.transform = `translate3d(0, ${(r * 40).toFixed(2)}px, 0)`
+        copy.style.visibility = o < 0.01 ? 'hidden' : 'visible'
+      }
+    }
+    const near = Math.round(a)
+    if (near !== last.current.near) {
+      last.current.near = near
+      tabs.current.forEach((tab, i) => {
+        if (!tab) return
+        if (i === near) tab.setAttribute('aria-current', 'true')
+        else tab.removeAttribute('aria-current')
+      })
     }
   }, [])
 
-  useScrollFrame(frame, live)
+  const frame = useCallback(() => {
+    const el = track.current
+    if (!el) return
+    const range = Math.max(1, el.offsetHeight - window.innerHeight)
+    apply(layerAt(-el.getBoundingClientRect().top / range))
+  }, [apply])
 
-  // leaving the stage (resize, reduced motion): hand the cards back to the CSS
+  useScrollFrame(frame, !reduced)
+
+  // reduced motion: no pinned track, the navigation picks the layer directly
   useEffect(() => {
-    if (live) return
-    cards.current.forEach((el) => {
-      if (!el) return
-      el.style.transform = ''
-      el.style.opacity = ''
-      el.style.visibility = ''
-      el.style.removeProperty('--dim')
-    })
-  }, [live])
+    if (reduced) apply(0)
+  }, [reduced, apply])
 
   const goTo = (index: number) => {
-    const trackEl = track.current
-    if (!trackEl) return
-    const range = trackEl.offsetHeight - window.innerHeight
-    const top = trackEl.getBoundingClientRect().top + window.scrollY
-    const raw = index === 0 ? 0 : LEAD + (index - 1) + TRANSITION
-    scrollToY(top + (raw / TOTAL) * range)
+    const el = track.current
+    if (!el) return
+    if (reduced) {
+      apply(index)
+      return
+    }
+    const range = el.offsetHeight - window.innerHeight
+    const top = el.getBoundingClientRect().top + window.scrollY
+    scrollToY(top + (index / (COUNT - 1)) * range)
   }
 
   return (
-    <Section id="capabilities" className={styles.container}>
-      <div className={styles.intro}>
-        <SectionHeading label={capabilitiesIntro.label} title={capabilitiesIntro.title} align="center" className={styles.heading} />
-        <p className={`t-body-lg ${styles.lead}`}>{capabilitiesIntro.body}</p>
-      </div>
-
-      <div ref={track} className={styles.track} data-live={live}>
+    <section id="capabilities" className={styles.band}>
+      <div ref={track} className={styles.track} data-live={!reduced}>
         <div className={styles.stage}>
-          <nav className={styles.rail} aria-label="Capabilities">
-            <div className={styles.railHead}>
-              <span className={`t-small ${styles.railTitle}`}>Capabilities</span>
-              <span className={`t-small ${styles.count}`}>
-                {services[active]?.number} / {String(COUNT).padStart(2, '0')}
-              </span>
+          <div className={styles.left}>
+            <div className={styles.intro}>
+              <p className={styles.kicker}>
+                <span className={styles.square} aria-hidden />
+                <span>
+                  <span className={styles.bracket}>[</span> {capabilitiesIntro.label} <span className={styles.bracket}>]</span>
+                </span>
+              </p>
+              <h2 className={styles.headline}>
+                {capabilitiesIntro.lines.map((line, i) => (
+                  <span key={line} className={i === capabilitiesIntro.lines.length - 1 ? styles.accent : undefined}>
+                    {line}
+                  </span>
+                ))}
+              </h2>
             </div>
-            <div className={styles.railBody}>
-              <span className={styles.railLine} aria-hidden>
-                <span ref={fill} className={styles.railFill} />
-              </span>
-              <ul className={styles.railList}>
-                {services.map((service, i) => (
-                  <li key={service.title}>
+
+            <div className={styles.detail}>
+              {capabilities.map((item, i) => (
+                <div
+                  key={item.name}
+                  ref={(el) => {
+                    copies.current[i] = el
+                  }}
+                  className={styles.copy}
+                  style={i === 0 ? undefined : { opacity: 0, visibility: 'hidden' }}
+                >
+                  <p className={styles.count}>
+                    <span className={styles.accentText}>{item.number}</span> / {String(COUNT).padStart(2, '0')}
+                  </p>
+                  <h3 className={styles.title}>{item.name}</h3>
+                  <p className={styles.description}>{item.description}</p>
+                  <p className={styles.metric}>
+                    <span className={styles.value}>{item.metric.value}</span>
+                    <span className={styles.metricLabel}>{item.metric.label}</span>
+                  </p>
+                  <ul className={styles.tags}>
+                    {item.tags.map((tag) => (
+                      <li key={tag}>
+                        <span className={styles.bracket}>[</span> {tag} <span className={styles.bracket}>]</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <ArrowButton href={capabilitiesIntro.cta.href} className={styles.cta}>
+                    {capabilitiesIntro.cta.label}
+                  </ArrowButton>
+                </div>
+              ))}
+            </div>
+
+            <nav className={styles.nav} aria-label="Services">
+              <ul>
+                {capabilities.map((item, i) => (
+                  <li key={item.name}>
                     <button
                       type="button"
-                      className={`t-h5 ${styles.railItem}`}
-                      aria-current={i === active ? 'true' : undefined}
+                      ref={(el) => {
+                        tabs.current[i] = el
+                      }}
+                      aria-current={i === 0 ? 'true' : undefined}
                       onClick={() => goTo(i)}
                     >
-                      <span className={styles.railNumber}>{service.number}</span>
-                      {service.title}
+                      <span className={styles.navNumber}>{item.number}</span>
+                      <span className={styles.navName}>{item.name}</span>
                     </button>
                   </li>
                 ))}
               </ul>
-            </div>
-            <span className={styles.meter} aria-hidden>
-              <span ref={meter} className={styles.meterFill} />
-            </span>
-          </nav>
+            </nav>
+          </div>
 
-          <ul ref={stack} className={styles.stack}>
-            {services.map((service, i) => (
-              <li
-                key={service.title}
-                ref={(el) => {
-                  cards.current[i] = el
-                }}
-                className={styles.slot}
-                style={{ '--i': i } as React.CSSProperties}
-              >
-                <article className={styles.card} data-tone={i % 2 === 0 ? 'surface' : 'white'}>
-                  <div className={styles.copy}>
-                    <p className={`t-body-lg-medium ${styles.number}`}>
-                      <span>{service.number}</span>
-                    </p>
-                    <div className={styles.text}>
-                      <p className={`t-body-lg-medium ${styles.tagline}`}>{service.tagline}</p>
-                      <h3 className={styles.title}>{service.title}</h3>
-                      <p className={`t-body-lg ${styles.description}`}>{service.description}</p>
-                      <ul className={styles.tags}>
-                        {service.tags.map((tag) => (
-                          <li key={tag} className={`t-small ${styles.tag}`}>
-                            {tag}
-                          </li>
+          <div className={styles.scene} aria-hidden>
+            <div className={styles.wrap}>
+              <div className={styles.stack}>
+                {capabilities.map((item, i) => (
+                  <div
+                    key={item.name}
+                    ref={(el) => {
+                      plates.current[i] = el
+                    }}
+                    className={styles.plate}
+                    style={{ '--i': i, '--b': i === 0 ? 1 : 0, '--act': i === 0 ? 1 : 0 } as React.CSSProperties}
+                  >
+                    <div className={styles.faceX} />
+                    <div className={styles.faceY} />
+                    <div className={styles.top}>
+                      <span className={styles.grid} />
+                      <span className={styles.plateNumber}>{item.number}</span>
+                      <span className={styles.plateName}>
+                        {item.plate.map((line) => (
+                          <span key={line}>{line}</span>
                         ))}
-                      </ul>
+                      </span>
                     </div>
                   </div>
-                  <div className={styles.panel}>
-                    <ServiceDrawing name={service.visual} className={styles.art} />
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ul>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </Section>
+    </section>
   )
 }

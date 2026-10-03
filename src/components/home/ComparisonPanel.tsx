@@ -5,14 +5,14 @@ type Props = {
   title: string
   variant: 'typical' | 'broAi'
   pills: PillSpec[]
-  /** Offsets the entrance so the two panels do not land together. */
-  delay?: number
 }
 
-export function ComparisonPanel({ title, variant, pills, delay = 0 }: Props) {
+export function ComparisonPanel({ title, variant, pills }: Props) {
   return (
-    <div className={styles.column} style={{ '--panel-delay': `${delay}ms` } as React.CSSProperties}>
-      <h3 className={`t-h3 ${styles.panelTitle}`}>{title}</h3>
+    <div className={styles.column} data-panel={variant}>
+      <h3 className={`t-h3 ${styles.panelTitle}`} data-title>
+        {title}
+      </h3>
       <div className={`${styles.panel} ${styles[variant]}`}>
         <div className={styles.bg} aria-hidden>
           <span className={`${styles.blob} ${styles.blobA}`} />

@@ -25,7 +25,13 @@ export function Services() {
                 <h3 className={`t-h2 ${styles.title}`}>{service.title}</h3>
                 <div className={styles.frame}>
                   <div className={styles.photo}>
-                    <Image src={service.image.src} alt={service.image.alt} fill sizes="(max-width: 1199.98px) 246px, 400px" />
+                    <Image
+                      src={service.image.src}
+                      alt={service.image.alt}
+                      fill
+                      sizes="(max-width: 1199.98px) 246px, 400px"
+                      style={service.image.position ? { objectPosition: service.image.position } : undefined}
+                    />
                   </div>
                 </div>
                 <p className={`t-h5 ${styles.description}`}>{service.description}</p>

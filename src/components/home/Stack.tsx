@@ -4,7 +4,6 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { stackIntro } from '@/content/home'
 import { stackFilters, tools, type StackFilter } from '@/content/stack'
 import { Section } from '@/components/ui/Section'
-import { SectionLabel } from '@/components/ui/SectionLabel'
 import { useHydrated } from '@/lib/hooks'
 import { Counter } from './Counter'
 import styles from './Stack.module.css'
@@ -12,8 +11,15 @@ import styles from './Stack.module.css'
 const words = stackIntro.title.split(' ')
 const matches = (filter: StackFilter, i: number) => filter === 'all' || tools[i]!.filters.includes(filter)
 const counts = Object.fromEntries(stackFilters.map((f) => [f.id, tools.filter((_, i) => matches(f.id, i)).length])) as Record<StackFilter, number>
-/** How close (px) the pointer has to get to a tool before it answers. */
-const NEAR = 64
+/*
+ * The pointer pushes every tile directly away from itself: PUSH px at the pointer,
+ * falling off linearly to nothing at REACH px (measured from the reference).
+ * The nearest tile within REACH is also marked as the one the pointer is on.
+ */
+const PUSH = 14
+const REACH = 140
+const RISE = 24
+const ACCENT_WORD = 3
 
 /**
  * The tools sit in one grid whose DOM order never changes. Picking a filter moves
@@ -24,6 +30,7 @@ export function Stack() {
   const hydrated = useHydrated()
   const [filter, setFilter] = useState<StackFilter>('all')
   const [entered, setEntered] = useState(false)
+  const [live, setLive] = useState(false)
   const root = useRef<HTMLDivElement>(null)
   const grid = useRef<HTMLUListElement>(null)
   const cells = useRef<(HTMLLIElement | null)[]>([])
@@ -41,7 +48,13 @@ export function Stack() {
       { rootMargin: '0px 0px -14% 0px' },
     )
     io.observe(el)
-    return () => io.disconnect()
+    // the ambient drift only runs while the section is on screen
+    const watch = new IntersectionObserver(([entry]) => setLive(!!entry?.isIntersecting))
+    watch.observe(el)
+    return () => {
+      io.disconnect()
+      watch.disconnect()
+    }
   }, [])
 
   // slot every cell: matches first, in their own order, then the rest
@@ -59,9 +72,10 @@ export function Stack() {
       if (!el) return
       const x = ((slot % cols) - (toolIndex % cols)) * stepX
       const y = (Math.floor(slot / cols) - Math.floor(toolIndex / cols)) * stepY
-      el.style.translate = x || y ? `${x}px ${y}px` : '0px'
+      const rise = entered ? 0 : RISE
+      el.style.translate = x || y || rise ? `${x}px ${y + rise}px` : '0px'
     })
-  }, [filter])
+  }, [filter, entered])
 
   useLayoutEffect(arrange, [arrange])
   useEffect(() => {
@@ -72,15 +86,15 @@ export function Stack() {
     return () => ro.disconnect()
   }, [arrange])
 
-  // the nearest tool answers before the pointer reaches it
+  // the pointer pushes tiles away from itself; the nearest one is marked
   useEffect(() => {
-    const gridEl = grid.current
-    if (!gridEl) return
+    const area = root.current
+    if (!area) return
     let raf = 0
     let x = 0
     let y = 0
     let near: HTMLElement | null = null
-    const set = (next: HTMLElement | null) => {
+    const mark = (next: HTMLElement | null) => {
       if (next === near) return
       near?.removeAttribute('data-near')
       next?.setAttribute('data-near', '')
@@ -89,18 +103,22 @@ export function Stack() {
     const run = () => {
       raf = 0
       let best: HTMLElement | null = null
-      let bestDistance = NEAR
+      let bestDistance = REACH
       cells.current.forEach((cell, i) => {
         const chip = cell?.firstElementChild as HTMLElement | null
-        if (!chip || !matches(filter, i)) return
-        const r = chip.getBoundingClientRect()
-        const d = Math.hypot(Math.max(r.left - x, 0, x - r.right), Math.max(r.top - y, 0, y - r.bottom))
-        if (d < bestDistance) {
+        if (!cell || !chip) return
+        const r = cell.getBoundingClientRect()
+        const dx = r.left + r.width / 2 - x
+        const dy = r.top + r.height / 2 - y
+        const d = Math.hypot(dx, dy)
+        const push = d < REACH && d > 0 ? PUSH * (1 - d / REACH) : 0
+        chip.style.translate = push ? `${((dx / d) * push).toFixed(2)}px ${((dy / d) * push).toFixed(2)}px` : '0px'
+        if (d < bestDistance && matches(filter, i)) {
           best = chip
           bestDistance = d
         }
       })
-      set(best)
+      mark(best)
     }
     const move = (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return
@@ -111,32 +129,43 @@ export function Stack() {
     const leave = () => {
       cancelAnimationFrame(raf)
       raf = 0
-      set(null)
+      mark(null)
+      cells.current.forEach((cell) => {
+        const chip = cell?.firstElementChild as HTMLElement | null
+        if (chip) chip.style.translate = '0px'
+      })
     }
-    gridEl.addEventListener('pointermove', move)
-    gridEl.addEventListener('pointerleave', leave)
+    area.addEventListener('pointermove', move)
+    area.addEventListener('pointerleave', leave)
     return () => {
       leave()
-      gridEl.removeEventListener('pointermove', move)
-      gridEl.removeEventListener('pointerleave', leave)
+      area.removeEventListener('pointermove', move)
+      area.removeEventListener('pointerleave', leave)
     }
   }, [filter])
 
   return (
     <Section id="stack" bandClassName={styles.band} className={styles.container}>
-      <div ref={root} className={styles.root} data-state={!hydrated ? 'static' : entered ? 'in' : 'out'}>
+      <div ref={root} className={styles.root} data-state={!hydrated ? 'static' : entered ? 'in' : 'out'}
+        data-live={live || undefined}
+      >
         <div className={styles.top}>
           <div className={styles.headline}>
-            <span className={styles.eyebrow}>
-              <SectionLabel>{stackIntro.label}</SectionLabel>
-            </span>
+            <p className={styles.eyebrow}>
+              <i aria-hidden />
+              <span>{stackIntro.label}</span>
+            </p>
             <h2 className={`t-h2 ${styles.title}`}>
               <span className="sr-only">{stackIntro.title}</span>
               <span aria-hidden>
                 {words.map((word, i) => (
                   <span key={i}>
                     <span className={styles.mask}>
-                      <span className={styles.word} style={{ '--w': i } as React.CSSProperties}>
+                      <span
+                        className={styles.word}
+                        data-accent={i === ACCENT_WORD || undefined}
+                        style={{ '--w': i } as React.CSSProperties}
+                      >
                         {word}
                       </span>
                     </span>{' '}
@@ -178,7 +207,7 @@ export function Stack() {
                 cells.current[i] = el
               }}
               className={styles.cell}
-              style={{ '--i': Math.min(i, 14) } as React.CSSProperties}
+              style={{ '--i': i, '--float': `${(4.6 + ((i * 37) % 10) * 0.26).toFixed(2)}s`, '--phase': `${(-((i * 83) % 47) / 10).toFixed(1)}s` } as React.CSSProperties}
             >
               <div className={styles.chip} data-dim={!matches(filter, i) || undefined}>
                 <span className={styles.mark} aria-hidden>
