@@ -1,0 +1,106 @@
+/*
+ * The site's text styles. Framer calls these presets; each has one class here.
+ * Headings default to black, body styles to grey; components override colour only.
+ */
+.t-display-xl,
+.t-display,
+.t-h2,
+.t-h3,
+.t-h4,
+.t-h5,
+.t-body-lg,
+.t-body-lg-medium,
+.t-body,
+.t-body-medium,
+.t-button,
+.t-small {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-feature-settings: var(--font-features);
+  letter-spacing: 0;
+}
+
+.t-display-xl {
+  font-size: var(--fs-display-xl);
+  font-weight: 700;
+  line-height: 1.1em;
+  text-transform: uppercase;
+  color: var(--color-black);
+}
+
+.t-display {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: 1.2em;
+  color: var(--color-black);
+}
+
+.t-h2 {
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: 1.3em;
+  color: var(--color-black);
+}
+
+.t-h3 {
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  line-height: 1.4em;
+  color: var(--color-black);
+}
+
+.t-h4 {
+  font-size: var(--fs-h4);
+  font-weight: 500;
+  line-height: 1.4em;
+  color: var(--color-black);
+}
+
+.t-h5 {
+  font-size: var(--fs-h5);
+  font-weight: 500;
+  line-height: 1.4em;
+  color: var(--color-black);
+}
+
+.t-body-lg {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.4em;
+  color: var(--color-text);
+}
+
+.t-body-lg-medium {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4em;
+  color: var(--color-text);
+}
+
+.t-body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4em;
+  color: var(--color-text);
+}
+
+.t-body-medium {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4em;
+  color: var(--color-text);
+}
+
+.t-button {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4em;
+  color: var(--color-text);
+}
+
+.t-small {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4em;
+  color: var(--color-text);
+}

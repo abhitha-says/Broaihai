@@ -1,0 +1,36 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 13;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 100px;
+  background: var(--color-accent-tint);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(50px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.cursor[data-active='true'] {
+  opacity: 1;
+}
+
+.label {
+  max-width: 60px;
+  color: var(--color-white);
+  text-align: center;
+}
+
+/* the "visit" variant: an outward arrow, as the reference shows over its screen */
+.arrow {
+  width: 28px;
+  height: 28px;
+  rotate: -45deg;
+  color: var(--color-white);
+}

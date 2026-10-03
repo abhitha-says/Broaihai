@@ -1,0 +1,73 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: max-content;
+  height: 48px;
+  padding: 8px 10px 8px 20px;
+  border-radius: 6px;
+  background: var(--color-surface);
+  overflow: clip;
+  white-space: nowrap;
+}
+
+.white {
+  background: var(--color-white);
+}
+
+/*
+ * The orange square sits 8px from the right edge, 36px across, behind the 32px
+ * icon. Hover opens the clip to the whole button.
+ */
+.fill {
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  clip-path: inset(6px 8px 6px calc(100% - 44px) round 3px);
+  transition: clip-path var(--spring-firm-duration) var(--spring-firm);
+}
+
+.label {
+  position: relative;
+  z-index: 1;
+  color: var(--color-black);
+  transition: color var(--spring-firm-duration) var(--spring-firm);
+}
+
+.icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.arrow {
+  width: 24px;
+  height: 24px;
+}
+
+@media (hover: hover) {
+  .button:hover .fill {
+    clip-path: inset(0 0 0 0 round 3px);
+  }
+
+  .button:hover .label {
+    color: var(--color-white);
+  }
+}
+
+.button:focus-visible .fill {
+  clip-path: inset(0 0 0 0 round 3px);
+}
+
+.button:focus-visible .label {
+  color: var(--color-white);
+}

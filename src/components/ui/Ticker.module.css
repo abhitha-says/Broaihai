@@ -1,0 +1,55 @@
+.ticker {
+  width: 100%;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: var(--ticker-gap);
+  width: max-content;
+  will-change: transform;
+}
+
+.set {
+  display: flex;
+  align-items: center;
+  gap: var(--ticker-gap);
+  flex: none;
+}
+
+.track[data-running='true'][data-direction='left'] {
+  animation: ticker-left var(--ticker-duration) linear infinite;
+}
+
+.track[data-running='true'][data-direction='right'] {
+  animation: ticker-right var(--ticker-duration) linear infinite;
+}
+
+.track[data-direction='right'] {
+  translate: calc(-1 * var(--ticker-distance)) 0;
+}
+
+@keyframes ticker-left {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: calc(-1 * var(--ticker-distance)) 0;
+  }
+}
+
+@keyframes ticker-right {
+  from {
+    translate: calc(-1 * var(--ticker-distance)) 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+/* as specific as the running rules above, and later, so it wins */
+@media (prefers-reduced-motion: reduce) {
+  .track[data-running][data-direction] {
+    animation: none;
+  }
+}

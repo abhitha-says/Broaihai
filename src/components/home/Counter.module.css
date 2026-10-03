@@ -1,0 +1,40 @@
+.counter {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  font-family: var(--font-sans);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1em;
+  letter-spacing: 0;
+  color: var(--color-black);
+}
+
+.digits {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 1.2em;
+  overflow: hidden;
+}
+
+.digit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.6em;
+  height: 1.2em;
+  overflow: hidden;
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+  line-height: 1em;
+  text-align: center;
+}

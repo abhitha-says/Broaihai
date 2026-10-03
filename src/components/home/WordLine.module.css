@@ -1,0 +1,38 @@
+.band {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--section-pad) 0;
+  overflow: clip;
+}
+
+.tilt {
+  flex: 1 0 0;
+  width: 1px;
+  rotate: -2deg;
+}
+
+.tilt[data-direction='right'] {
+  rotate: 2deg;
+}
+
+.phrase {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: clip;
+}
+
+.word {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: pre;
+}
+
+.dot {
+  color: var(--color-accent);
+}
+
+.ghost span {
+  color: var(--color-ghost);
+}

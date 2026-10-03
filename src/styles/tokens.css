@@ -1,0 +1,66 @@
+/*
+ * Design tokens, lifted from the Framer project's own variables.
+ * Breakpoints (desktop-first, as Framer authors them):
+ *   desktop  >= 1200px
+ *   tablet   810px - 1199.98px   @media (max-width: 1199.98px)
+ *   phone    <= 809.98px         @media (max-width: 809.98px)
+ */
+:root {
+  /* colour */
+  --color-accent: #ff531f;
+  --color-accent-soft: #ff6a3d;
+  --color-accent-tint: #ff531f0d;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-ink: #191919;
+  --color-text: #666;
+  --color-muted: #969696;
+  --color-line: #ccc;
+  --color-ghost: #e3e3e3;
+  --color-surface: #f7f7f7;
+  --color-white-20: #fff3;
+  --color-white-50: #ffffff80;
+  --color-black-30: #0000004d;
+
+  /* type */
+  --font-sans: var(--font-tasa), 'TASA Orbiter', sans-serif;
+  --font-caption: var(--font-inter), 'Inter', sans-serif;
+  /* TASA Orbiter's alternates as Framer enables them on every text style */
+  --font-features: 'blwf' on, 'cv09' on, 'cv03' on, 'cv04' on, 'cv11' on;
+
+  /* layout */
+  --container-max: 1310px;
+  --container-wide: 1920px;
+  --gutter: 30px;
+  --section-pad: 80px;
+  --header-top: 20px;
+
+  /* the text styles' sizes, overridden per breakpoint below */
+  --fs-display-xl: 120px;
+  --fs-display: 74px;
+  --fs-h2: 46px;
+  --fs-h3: 32px;
+  --fs-h4: 24px;
+  --fs-h5: 20px;
+}
+
+@media (max-width: 1199.98px) {
+  :root {
+    --fs-display-xl: 100px;
+    --fs-display: 64px;
+    --fs-h2: 40px;
+    --fs-h3: 26px;
+    --fs-h4: 18px;
+  }
+}
+
+@media (max-width: 809.98px) {
+  :root {
+    --gutter: 20px;
+    --fs-display-xl: 52px;
+    --fs-display: 44px;
+    --fs-h2: 30px;
+    --fs-h3: 22px;
+    --fs-h5: 18px;
+  }
+}

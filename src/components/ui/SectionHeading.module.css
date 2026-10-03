@@ -1,0 +1,24 @@
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  overflow: clip;
+}
+
+.center {
+  align-items: center;
+}
+
+.title {
+  width: 100%;
+}
+
+.center .title {
+  text-align: center;
+}
+
+.balance {
+  text-wrap: balance;
+}

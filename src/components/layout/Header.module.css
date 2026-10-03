@@ -1,0 +1,129 @@
+.wrap {
+  position: fixed;
+  top: var(--header-top);
+  left: 50%;
+  z-index: 10;
+  width: 800px;
+  max-width: calc(100% - 2 * var(--gutter));
+  transform: translateX(-50%);
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--color-white);
+  backdrop-filter: blur(10px);
+  overflow: clip;
+}
+
+/* the 1px border is drawn inside the pill so it never changes its size */
+.nav::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-ghost);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: block;
+  height: 28px;
+}
+
+.logoImage {
+  width: auto;
+  height: 100%;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.link {
+  display: block;
+  text-align: center;
+  transition: color var(--spring-soft-duration) var(--spring-soft);
+}
+
+@media (hover: hover) {
+  .link:hover {
+    color: var(--color-accent);
+  }
+}
+
+.toggle,
+.menu {
+  display: none;
+}
+
+/* ---- tablet & phone: logo + hamburger, links fold into the pill ---- */
+@media (max-width: 1199.98px) {
+  .wrap {
+    width: 100%;
+  }
+
+  /* the entrance runs on desktop only */
+  .wrap:global(.appear) {
+    animation: none;
+  }
+
+  .links,
+  .cta {
+    display: none;
+  }
+
+  .logo {
+    width: 139px;
+    height: 32px;
+  }
+
+  .logoImage {
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .toggle {
+    display: block;
+  }
+
+  /* The menu grows from nothing to its content height. */
+  .menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--spring-flat-duration) var(--spring-flat);
+  }
+
+  .nav[data-open='true'] .menu {
+    grid-template-rows: 1fr;
+  }
+
+  .menuInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .menuLinks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    padding-top: 24px;
+  }
+}

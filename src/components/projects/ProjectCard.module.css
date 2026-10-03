@@ -1,0 +1,135 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  scroll-margin-top: 120px;
+}
+
+.images {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 580px;
+  border-radius: 40px;
+  overflow: clip;
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  transition:
+    scale var(--spring-soft-duration) var(--spring-soft),
+    filter var(--spring-soft-duration) var(--spring-soft);
+}
+
+.cover img,
+.lift img {
+  object-fit: cover;
+}
+
+/* the lifted copy: 300 x 340, scaled to 330 x 374, invisible until hover */
+.lift {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 300px;
+  aspect-ratio: 0.882353;
+  border-radius: 20px;
+  overflow: clip;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.1);
+  transition:
+    opacity var(--spring-soft-duration) var(--spring-soft),
+    transform var(--spring-soft-duration) var(--spring-soft);
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  overflow: clip;
+}
+
+.title {
+  flex: 1 0 0;
+  width: 1px;
+}
+
+.meta {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  gap: 2px;
+  width: 1px;
+  max-width: 40%;
+  overflow: clip;
+}
+
+.year,
+.category {
+  width: 100%;
+  text-align: right;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .cover {
+    scale: 1.1;
+    filter: blur(5px);
+  }
+
+  .card:hover .lift {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1) rotate(-3deg);
+  }
+}
+
+/* tablet and phone use the compact card */
+@media (max-width: 1199.98px) {
+  .images {
+    height: 400px;
+    border-radius: 30px;
+  }
+
+  .lift {
+    width: 203px;
+  }
+
+  .text {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .title {
+    flex: none;
+    width: 100%;
+  }
+
+  .meta {
+    flex: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: none;
+  }
+
+  .year {
+    flex: 1 0 0;
+    order: 1;
+    width: 1px;
+    max-width: 24%;
+  }
+
+  .category {
+    flex: 1 0 0;
+    order: 0;
+    width: 1px;
+    text-align: left;
+  }
+}

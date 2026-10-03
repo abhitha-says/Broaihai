@@ -1,0 +1,139 @@
+.section {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+  overflow: clip;
+}
+
+.grid {
+  display: grid;
+  flex: 1 0 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+  width: 1px;
+  max-width: var(--container-max);
+  padding: 0 var(--gutter);
+}
+
+/* hairline rule, 6px of mat, then the picture; the aspect ratio keeps the old height */
+.frame {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pad: 6px;
+  --r-outer: 18px;
+  --p: 1;
+  position: relative;
+  margin: 0;
+  border-radius: var(--r-outer);
+  background: var(--color-surface);
+  isolation: isolate;
+}
+
+.frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: clamp(0, calc((var(--p) - 0.55) * 2.2), 1);
+  transition: border-color 0.5s var(--ease);
+}
+
+.mask {
+  position: absolute;
+  inset: var(--pad);
+  border-radius: calc(var(--r-outer) - var(--pad));
+  overflow: clip;
+  /* the window: opens from a smaller inset, rounder at the corners, to the full frame */
+  clip-path: inset(
+    calc((1 - var(--p)) * 16%) calc((1 - var(--p)) * 9%) calc((1 - var(--p)) * 16%) calc((1 - var(--p)) * 9%)
+      round calc(var(--r-outer) - var(--pad) + (1 - var(--p)) * 18px)
+  );
+}
+
+/* fine inner edge so pale screenshots don't bleed into the mat */
+.mask::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink) 8%, transparent);
+  pointer-events: none;
+}
+
+/* 1250 x 682 over two 610 x 444 */
+.wide {
+  grid-column: 1 / -1;
+  aspect-ratio: 1250 / 682;
+}
+
+.half {
+  aspect-ratio: 610 / 444;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  transform: scale(calc(1 + (1 - var(--p)) * 0.16));
+  will-change: transform;
+}
+
+.settle {
+  position: absolute;
+  inset: 0;
+  filter: blur(calc((1 - var(--p)) * 6px));
+  transition: transform 0.9s var(--ease);
+}
+
+.settle img {
+  object-fit: cover;
+  object-position: top;
+}
+
+/* hover: the rule firms up and the picture drifts a hair; no zoom */
+@media (hover: hover) {
+  .frame:hover::before {
+    border-color: color-mix(in srgb, var(--color-ink) 30%, transparent);
+  }
+
+  .frame:hover .settle {
+    transform: translateY(-4px) scale(1.018);
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .frame {
+    --r-outer: 16px;
+  }
+}
+
+/* one column, 24px apart, the frames a touch squarer */
+@media (max-width: 809.98px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .frame {
+    --pad: 5px;
+    --r-outer: 14px;
+  }
+
+  .wide {
+    aspect-ratio: 350 / 260;
+  }
+
+  .half {
+    aspect-ratio: 350 / 255;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media,
+  .settle,
+  .mask {
+    transform: none;
+    filter: none;
+  }
+}

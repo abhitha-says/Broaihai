@@ -1,0 +1,39 @@
+import Image from 'next/image'
+import { servicesIntro } from '@/content/home'
+import { services } from '@/content/services'
+import { Section } from '@/components/ui/Section'
+import { SectionHeading } from '@/components/ui/SectionHeading'
+import styles from './Services.module.css'
+
+/**
+ * Four full-bleed cards that stick to the top of the viewport in turn, so each
+ * one slides up over the last. Phones get a plain stack.
+ */
+export function Services() {
+  return (
+    <Section id="services" className={styles.container}>
+      <SectionHeading label={servicesIntro.label} title={servicesIntro.title} align="center" className={styles.heading} />
+      <ul className={styles.stack}>
+        {services.map((service) => (
+          <li key={service.title} className={styles.slot}>
+            <article className={styles.card}>
+              <div className={styles.background}>
+                <Image src={service.background.src} alt={service.background.alt} fill sizes="100vw" />
+              </div>
+              <div className={styles.overlay} aria-hidden />
+              <div className={styles.content}>
+                <h3 className={`t-h2 ${styles.title}`}>{service.title}</h3>
+                <div className={styles.frame}>
+                  <div className={styles.photo}>
+                    <Image src={service.image.src} alt={service.image.alt} fill sizes="(max-width: 1199.98px) 246px, 400px" />
+                  </div>
+                </div>
+                <p className={`t-h5 ${styles.description}`}>{service.description}</p>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  )
+}

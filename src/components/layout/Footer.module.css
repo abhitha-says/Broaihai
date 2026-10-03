@@ -1,0 +1,205 @@
+.footer {
+  position: relative;
+  display: flex;
+  padding: 80px 0;
+  border-radius: 50px 50px 0 0;
+  overflow: clip;
+  scroll-margin-top: 0;
+}
+
+.background {
+  z-index: 1;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-black);
+  opacity: 0.6;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 80px;
+  width: 1px;
+  padding: 0 var(--gutter);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 150px;
+  width: 100%;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--color-white-50);
+  backdrop-filter: blur(5px);
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.details {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: space-between;
+  width: 1px;
+  margin: 0;
+}
+
+.detail {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 1px;
+}
+
+.detailLabel {
+  color: var(--color-surface);
+}
+
+.detailValue {
+  margin: 0;
+  color: var(--color-white);
+}
+
+.detailValue a {
+  transition: color var(--spring-soft-duration) var(--spring-soft);
+}
+
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 24px;
+  border-radius: 14px;
+  background: var(--color-white-20);
+  backdrop-filter: blur(10px);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1em;
+  color: var(--color-ghost);
+  transition: color var(--spring-default-duration) var(--spring-default);
+}
+
+.backArrow {
+  width: 16px;
+  height: 16px;
+  transition: translate var(--spring-default-duration) var(--spring-default);
+}
+
+.copyright {
+  color: var(--color-white);
+  white-space: pre;
+}
+
+.wordmark {
+  width: 100%;
+  mask-image: linear-gradient(0deg, transparent 9.45946%, #000 75.6757%);
+}
+
+.wordmarkImage {
+  width: 100%;
+  height: auto;
+}
+
+@media (hover: hover) {
+  .detailValue a:hover {
+    color: var(--color-accent);
+  }
+
+  .back:hover {
+    color: var(--color-white);
+  }
+
+  .back:hover .backArrow {
+    translate: 0 -3px;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .container {
+    gap: 60px;
+  }
+
+  .top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .details {
+    flex: none;
+    width: 100%;
+  }
+
+  .detail {
+    flex: none;
+    width: auto;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .footer {
+    border-radius: 40px 40px 0 0;
+  }
+
+  .top {
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .detail {
+    width: 100%;
+  }
+
+  .bottom {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .back {
+    order: 1;
+  }
+}

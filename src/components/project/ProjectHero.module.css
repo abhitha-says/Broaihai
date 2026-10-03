@@ -1,0 +1,376 @@
+/*
+ * The cinematic hero. Everything is sized in cqw of the scene, so the
+ * composition scales as one picture; the phone breakpoint recomposes it.
+ *
+ * Layers, back to front: screen, name, avatars. Entrance: the screen is already
+ * in place; the name settles and the two avatars swing in from 1.4x. Scroll
+ * (measured from the screen recording of the reference): screen and name move
+ * 1:1 with the page, the left avatar rises 1.25x as fast and the right 1.35x,
+ * eased in ProjectHero.tsx. */
+.hero {
+  --blue: #2f5bff;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  background: linear-gradient(180deg, #eef1f9 0%, #f4f5f9 55%, #fcfbf8 100%);
+  overflow-x: clip;
+}
+
+.scene {
+  position: relative;
+  container-type: inline-size;
+  width: 100%;
+  max-width: 1920px;
+  height: 56cqw;
+  margin: 0 auto;
+  overflow: clip;
+}
+
+/* a faint cool atmosphere that the screen seems to glow into */
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(48cqw 30cqw at 50% 40%, rgb(47 91 255 / 0.1), transparent 70%),
+    radial-gradient(30cqw 22cqw at 8% 80%, rgb(47 91 255 / 0.07), transparent 70%),
+    radial-gradient(30cqw 22cqw at 92% 80%, rgb(47 91 255 / 0.07), transparent 70%);
+  animation: fade 1.4s ease-out both;
+}
+
+.scene::after {
+  /* the scene melts into the page below */
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 6cqw;
+  background: linear-gradient(to bottom, transparent, #fcfbf8);
+  pointer-events: none;
+  z-index: 8;
+}
+
+/* ---- the name, set huge behind the screen ---- */
+.word {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 5;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  height: 24cqw;
+  overflow: clip;
+  animation: word-in 1.4s 0.1s var(--ease-out) both;
+}
+
+.wordText {
+  align-self: flex-end;
+  margin-bottom: 1.5cqw;
+  font-size: 18cqw; /* refined by the fit effect */
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  background: linear-gradient(180deg, var(--word-top, #14213f) 8%, var(--word-bottom, #2f5bff) 72%, color-mix(in srgb, var(--word-bottom, #2f5bff) 45%, transparent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- the screen ---- */
+.stage {
+  position: absolute;
+  top: 12cqw;
+  left: 50%;
+  z-index: 4;
+  width: 50cqw;
+  translate: -50% 0;
+  animation: screen-in 1.3s 0.15s var(--ease-out) both;
+  perspective: 120cqw;
+}
+
+.frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 1440 / 783;
+  border-radius: 1.1cqw;
+  background: #eef1f8;
+  overflow: clip;
+  isolation: isolate;
+  box-shadow:
+    0 0 0 1px rgb(25 40 90 / 0.08),
+    0 2.4cqw 5cqw -1.2cqw rgb(25 45 120 / 0.28),
+    0 0.6cqw 1.6cqw rgb(25 45 120 / 0.1);
+  transition:
+    scale 0.6s var(--ease-out),
+    box-shadow 0.6s var(--ease-out);
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.frame img {
+  object-fit: cover;
+  object-position: top;
+}
+
+a.frame:hover,
+a.frame:focus-visible {
+  scale: 1.018;
+  box-shadow:
+    0 0 0 1px rgb(47 91 255 / 0.3),
+    0 3.2cqw 6.5cqw -1.2cqw rgb(25 45 120 / 0.38),
+    0 0.8cqw 2cqw rgb(25 45 120 / 0.14);
+}
+
+a.frame:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+}
+
+.visit {
+  position: absolute;
+  inset: auto 0 1.6cqw;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: max-content;
+  margin: 0 auto;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 24px rgb(25 45 120 / 0.18);
+  color: var(--color-ink);
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0;
+  translate: 0 12px;
+  transition:
+    opacity 0.35s ease,
+    translate 0.5s var(--ease-out);
+  pointer-events: none;
+}
+
+.visitArrow {
+  width: 18px;
+  height: 18px;
+  rotate: -45deg;
+}
+
+a.frame:hover .visit,
+a.frame:focus-visible .visit {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---- the two avatars ---- */
+.side {
+  position: absolute;
+  z-index: 6;
+  bottom: -6cqw;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.left {
+  left: -2cqw;
+  width: 33cqw;
+}
+
+.right {
+  right: -2cqw;
+  width: 30cqw;
+}
+
+.figure {
+  transform-origin: 50% 80%;
+  animation: figure-in-left 1.5s 0.9s var(--ease-out) both;
+}
+
+.right .figure {
+  transform-origin: 50% 80%;
+  animation-name: figure-in-right;
+  animation-delay: 1.05s;
+}
+
+.figureImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 1.6cqw 2.2cqw rgb(25 45 120 / 0.28));
+}
+
+/* ---- facts under the scene ---- */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 24px;
+  animation: rise-up 1s 1.3s var(--ease-out) both;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 180px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.7);
+  box-shadow: 0 0 0 1px rgb(25 40 90 / 0.07);
+}
+
+.factLabel {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.factValue {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.factLink {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.factLink:hover,
+.factLink:focus-visible {
+  text-decoration: underline;
+}
+
+/* ---- keyframes ---- */
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: -50% 4cqw;
+    filter: blur(12px);
+  }
+}
+
+@keyframes rise-up {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+    translate: -50% 5cqw;
+    filter: blur(10px);
+  }
+}
+
+/* the name starts fully shown but faint, then settles in behind the screen */
+@keyframes word-in {
+  from {
+    opacity: 0.55;
+    translate: 0 2cqw;
+  }
+}
+
+@keyframes figure-in-left {
+  from {
+    opacity: 0;
+    scale: 1.4;
+    rotate: -12deg;
+    translate: -6cqw 2cqw;
+    filter: blur(6px);
+  }
+}
+
+@keyframes figure-in-right {
+  from {
+    opacity: 0;
+    scale: 1.4;
+    rotate: 10deg;
+    translate: 6cqw 2cqw;
+    filter: blur(6px);
+  }
+}
+
+/* ---- tablet ---- */
+
+/* ---- phone: the screen fills the width, the panels peek from below and the edges ---- */
+@media (max-width: 809.98px) {
+  .scene {
+    height: 165cqw;
+  }
+
+
+
+
+  .stage {
+    top: 62cqw;
+    width: 90cqw;
+  }
+
+  .frame {
+    border-radius: 3cqw;
+  }
+
+  .word {
+    height: 70cqw;
+  }
+
+  .left {
+    left: -10cqw;
+    width: 62cqw;
+  }
+
+  .right {
+    right: -10cqw;
+    width: 56cqw;
+  }
+
+  .side {
+    bottom: -4cqw;
+  }
+
+  .visit {
+    inset-block-end: 3cqw;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .facts {
+    padding-inline: 20px;
+  }
+
+  .fact {
+    flex: 1 1 140px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere,
+  .word,
+  .stage,
+  .side,
+  .facts {
+    animation: none;
+  }
+}

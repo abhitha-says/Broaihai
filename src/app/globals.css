@@ -1,0 +1,11 @@
+/*
+ * Global styles live in cascade layers so that any component's CSS Module, which
+ * is unlayered, always wins over them regardless of the order files load in.
+ */
+@layer reset, typography, utilities;
+
+@import '../styles/tokens.css';
+@import '../styles/springs.css';
+@import '../styles/base.css' layer(reset);
+@import '../styles/typography.css' layer(typography);
+@import '../styles/motion.css' layer(utilities);

@@ -1,0 +1,224 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+  width: 100%;
+}
+
+.intro {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 1px;
+  max-width: 340px;
+  overflow: clip;
+}
+
+.body {
+  display: flex;
+  flex: 1 0 0;
+  align-items: flex-start;
+  gap: 60px;
+  width: 1px;
+}
+
+.portrait {
+  position: relative;
+  flex: 1 0 0;
+  width: 1px;
+  aspect-ratio: 0.894737;
+  border-radius: 30px;
+  overflow: clip;
+}
+
+.portraitImage {
+  object-fit: cover;
+  opacity: 0;
+}
+
+.portraitImage[data-active='true'] {
+  opacity: 1;
+}
+
+.message {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  width: 1px;
+  max-width: 340px;
+  margin: 0;
+  overflow: clip;
+}
+
+.messageTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.company {
+  position: relative;
+  width: 100px;
+  height: 50px;
+}
+
+.company img {
+  object-fit: contain;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star {
+  width: 18px;
+  height: 18px;
+  object-fit: cover;
+}
+
+.quote {
+  width: 100%;
+  margin: 0;
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.name {
+  color: var(--color-accent);
+}
+
+.others {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.thumbs {
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 1px;
+  max-width: 340px;
+  overflow: clip;
+}
+
+.thumbSlot {
+  flex: 1 0 0;
+  width: 1px;
+  aspect-ratio: 1;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: clip;
+  filter: grayscale(1);
+  transition:
+    border-radius var(--spring-default-duration) var(--spring-default),
+    filter var(--spring-default-duration) var(--spring-default);
+}
+
+.thumb img {
+  object-fit: cover;
+}
+
+.thumb[data-active='true'] {
+  border-radius: 100px;
+  filter: grayscale(0);
+}
+
+@media (max-width: 1199.98px) {
+  .feedback {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .intro {
+    flex: none;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .heading {
+    align-items: center;
+  }
+
+  .heading h2 {
+    text-align: center;
+  }
+
+  .body {
+    flex: none;
+    gap: 40px;
+    width: 100%;
+  }
+
+  .message {
+    max-width: none;
+  }
+
+  .others {
+    justify-content: flex-start;
+  }
+
+  .thumbs {
+    max-width: 385px;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .container {
+    gap: 40px;
+  }
+
+  .feedback {
+    gap: 40px;
+  }
+
+  .body {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .portrait,
+  .message {
+    flex: none;
+    width: 100%;
+  }
+
+  .others {
+    justify-content: center;
+  }
+
+  .thumbs {
+    max-width: none;
+  }
+}

@@ -1,0 +1,12 @@
+.label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: max-content;
+  color: var(--color-black);
+  white-space: nowrap;
+}
+
+.slashes {
+  color: var(--color-accent);
+}

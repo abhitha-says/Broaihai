@@ -1,0 +1,73 @@
+/*
+ * Entrance on load: rise 40px and fade in on the "appear" spring.
+ * Set --appear-delay per element (the original staggers 0.2s / 0.3s / 0.4s).
+ * Pure CSS, so it runs before hydration and needs no JS to finish.
+ */
+.appear {
+  animation: appear var(--spring-appear-duration) var(--spring-appear) var(--appear-delay, 0s) both;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0.001;
+    translate: 0 40px;
+  }
+}
+
+/*
+ * While the opening loader plays (full page loads only) the entrance animations
+ * wait at their start frame, then run as the loader lifts away.
+ */
+html.is-loading,
+html.is-revealing {
+  overflow: hidden;
+}
+html.is-loading .appear {
+  animation-play-state: paused;
+}
+html.is-revealing .appear {
+  animation-delay: calc(var(--appear-delay, 0s) + 0.25s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appear {
+    animation: none;
+  }
+}
+
+/*
+ * Page transitions (React <ViewTransition>). A project card's cover and the
+ * project page's screen share a name, so the cover morphs into the screen on
+ * the way in and back again on the way out; everything else crossfades.
+ */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(root) {
+  animation-duration: 0.35s;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.3, 0, 0, 1);
+}
+
+::view-transition-image-pair(.morph) {
+  animation: morph-blur 0.55s cubic-bezier(0.3, 0, 0, 1) both;
+}
+
+@keyframes morph-blur {
+  35% {
+    filter: blur(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

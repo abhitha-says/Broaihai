@@ -1,0 +1,159 @@
+.container {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.intro {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-self: stretch;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 1px;
+  max-width: 600px;
+  overflow: clip;
+}
+
+.help {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--color-surface);
+  overflow: clip;
+}
+
+.helpText {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 1px;
+  max-width: 400px;
+  overflow: clip;
+}
+
+.list {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: center;
+  width: 1px;
+  max-width: 1000px;
+  padding: 10px;
+  border-radius: 20px;
+  background: var(--color-surface);
+  overflow: clip;
+}
+
+/* ---- one question ---- */
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 14px;
+  overflow: clip;
+}
+
+/* hairline between questions, drawn over the padding so it adds no height */
+.item + .item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.questionHeading {
+  margin: 0;
+  font: inherit;
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+}
+
+.questionText {
+  flex: 1 0 0;
+  width: 1px;
+}
+
+.answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--spring-default-duration) var(--spring-default);
+}
+
+.item[data-open='true'] .answer {
+  grid-template-rows: 1fr;
+}
+
+.answerInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.answerText {
+  padding-top: 10px;
+}
+
+@media (max-width: 1199.98px) {
+  .container {
+    gap: 40px;
+  }
+
+  .help {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .helpText {
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .intro {
+    flex: none;
+    align-self: auto;
+    justify-content: flex-start;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .heading {
+    align-items: center;
+  }
+
+  .heading h2 {
+    text-align: center;
+  }
+
+  .help,
+  .helpText {
+    align-items: center;
+    text-align: center;
+  }
+
+  .list {
+    flex: none;
+    width: 100%;
+  }
+}
