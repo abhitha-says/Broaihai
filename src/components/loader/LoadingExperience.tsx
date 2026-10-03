@@ -51,6 +51,8 @@ export function LoadingExperience() {
   const [landedOn] = useState(pathname)
   const reduced = reducedMotion || pathname !== '/' || landedOn !== '/'
   const [phase, setPhase] = useState<Phase>('initial')
+  // once per browser session: set when the sequence reaches its reveal, read here and by the pre-paint script
+  const [seen, setSeen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const screenRef = useRef<SVGPathElement>(null)
   const rigRef = useRef<HTMLDivElement>(null)
@@ -60,6 +62,11 @@ export function LoadingExperience() {
     const finish = () => html.classList.remove('is-loading', 'is-revealing')
 
     if (reduced) {
+      finish()
+      return
+    }
+    if (sessionStorage.getItem('loader-seen')) {
+      setSeen(true)
       finish()
       return
     }
@@ -119,6 +126,7 @@ export function LoadingExperience() {
     if (hold === 'screen') return clear
     at(AT.reveal, () => {
       toHero()
+      sessionStorage.setItem('loader-seen', '1')
       setPhase('reveal')
       html.classList.remove('is-loading')
       html.classList.add('is-revealing')
@@ -132,13 +140,13 @@ export function LoadingExperience() {
     }
   }, [reduced])
 
-  if (reduced || phase === 'complete') return null
+  if (reduced || seen || phase === 'complete') return null
 
   const reached = ORDER.indexOf(phase)
   const cls = [styles.loader, ...ORDER.slice(1, reached + 1).map((p) => styles[p])].join(' ')
 
   return (
-    <div ref={rootRef} className={cls} aria-hidden="true">
+    <div ref={rootRef} className={cls} aria-hidden="true" data-loader>
       <div className={styles.cols}>
         {[0, 1, 2, 3, 4].map((i) => (
           <div key={i} className={styles.col} style={vars({ '--c': i })}>

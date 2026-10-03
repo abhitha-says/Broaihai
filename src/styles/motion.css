@@ -68,3 +68,8 @@ html.is-loading .appear {
     animation-delay: 0s !important;
   }
 }
+
+/* the opening loader has already played this session */
+html.loader-seen [data-loader] {
+  display: none;
+}
