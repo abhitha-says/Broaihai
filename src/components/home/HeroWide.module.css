@@ -355,7 +355,7 @@
     width: 100%;
     max-width: none;
     min-height: max(100svh, 720px);
-    padding: 104px 0 56px 11vw;
+    padding: 104px 0 56px 8vw;
   }
 
   .copy {
