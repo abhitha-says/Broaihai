@@ -3,9 +3,10 @@
 import Link from 'next/link'
 import { useRef, type CSSProperties, type PointerEvent } from 'react'
 import { ArrowRight } from '@/components/ui/icons'
-import styles from './Hero.module.css'
 
 type Props = {
+  /** The CSS module of the hero it sits in (the compact and the desktop hero each style their own buttons). */
+  styles: Record<string, string>
   href: string
   label: string
   /** `solid` is the primary action (ink, fills orange); `ghost` the secondary (outlined, fills ink). */
@@ -18,7 +19,7 @@ type Props = {
  * A hero call to action. A mouse pulls it a little toward the pointer, the label
  * rolls up to a copy of itself, and the fill grows out of the arrow square.
  */
-export function HeroButton({ href, label, variant, delay }: Props) {
+export function HeroButton({ styles, href, label, variant, delay }: Props) {
   const ref = useRef<HTMLAnchorElement>(null)
 
   const pull = (e: PointerEvent<HTMLAnchorElement>) => {

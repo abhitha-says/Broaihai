@@ -48,9 +48,10 @@
   align-items: center;
   gap: 10px;
   font-family: var(--caption);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-ink);
 }
@@ -70,10 +71,12 @@
   margin: 0;
   font-family: var(--font-sans);
   font-feature-settings: var(--font-features);
-  font-size: clamp(27px, 8vw, 40px);
+  font-size: clamp(30px, 8.8vw, 46px);
   font-weight: 700;
-  line-height: 1.04em;
+  line-height: 1em;
+  letter-spacing: -0.018em;
   text-transform: uppercase;
+  text-wrap: balance;
   color: var(--color-black);
 }
 
@@ -106,28 +109,36 @@
 
 .count {
   font-family: var(--caption);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
 }
 
 .title {
   margin: 0;
   font-family: var(--font-sans);
   font-feature-settings: var(--font-features);
-  font-size: clamp(22px, 6.4vw, 30px);
+  font-size: clamp(25px, 7vw, 32px);
   font-weight: 700;
-  line-height: 1.05em;
+  line-height: 1.04em;
+  letter-spacing: -0.012em;
   text-transform: uppercase;
+  text-wrap: balance;
   color: var(--color-black);
 }
 
 .description {
-  max-width: 440px;
+  max-width: min(100%, 32em);
   font-family: var(--font-sans);
   font-feature-settings: var(--font-features);
-  font-size: 14px;
-  line-height: 1.45em;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55em;
+  letter-spacing: -0.003em;
+  text-wrap: pretty;
   color: var(--color-text);
 }
 
@@ -140,34 +151,42 @@
 .value {
   font-family: var(--font-sans);
   font-feature-settings: var(--font-features);
-  font-size: clamp(24px, 7vw, 32px);
-  font-weight: 700;
+  font-size: clamp(22px, 6.2vw, 28px);
+  font-weight: 600;
   line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
   color: var(--color-accent-text);
   white-space: nowrap;
 }
 
 .metricLabel {
   font-family: var(--caption);
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-text);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 14px;
+  gap: 6px 12px;
   font-family: var(--caption);
   font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1.2;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink);
 }
 
+/* the button's own 20px of left padding sits on a fill that matches the page, so pull it left: its label then starts on the column's edge, with every other line */
 .cta {
   margin-top: 4px;
+  margin-left: -20px;
 }
 
 .nav {
@@ -190,10 +209,13 @@
   width: 100%;
   padding: 4px 0;
   font-family: var(--caption);
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-text);
   text-align: left;
   transition: color 300ms ease;
 }
@@ -315,8 +337,10 @@
   left: 6.5%;
   top: 5%;
   font-family: var(--caption);
-  font-size: calc(var(--S) * 0.036);
-  letter-spacing: 0.1em;
+  font-size: calc(var(--S) * 0.04);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
 }
 
 .plateName {
@@ -326,9 +350,10 @@
   flex-direction: column;
   font-family: var(--font-sans);
   font-feature-settings: var(--font-features);
-  font-size: calc(var(--S) * 0.07);
+  font-size: calc(var(--S) * 0.074);
   font-weight: 700;
-  line-height: 1.02;
+  line-height: 1;
+  letter-spacing: 0.012em;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -355,8 +380,12 @@
     gap: 20px;
   }
 
+  .kicker {
+    font-size: clamp(12px, 0.9vw, 15px);
+  }
+
   .headline {
-    font-size: clamp(34px, min(3.6vw, 6.2svh), 74px);
+    font-size: clamp(34px, min(4.4vw, 6.4svh), 76px);
   }
 
   .headline span {
@@ -376,27 +405,39 @@
   }
 
   .count {
-    font-size: 12px;
+    font-size: clamp(12px, 0.84vw, 14px);
   }
 
   .title {
-    font-size: clamp(24px, min(2.6vw, 4.6svh), 50px);
+    font-size: clamp(25px, min(3vw, 4.6svh), 56px);
   }
 
   .description {
-    font-size: clamp(14px, min(1.12vw, 2.4svh), 18px);
+    font-size: clamp(14.5px, min(1.2vw, 2.4svh), 20px);
   }
 
   .value {
-    font-size: clamp(28px, min(2.8vw, 5.2svh), 56px);
+    font-size: clamp(22px, min(2.2vw, 3.7svh), 44px);
   }
 
   .metricLabel {
-    font-size: 11px;
+    font-size: clamp(12px, 0.8vw, 14px);
   }
 
   .tags {
-    font-size: 11px;
+    gap: 6px 16px;
+    font-size: clamp(12px, 0.8vw, 14px);
+    letter-spacing: 0.12em;
+  }
+
+  .nav button {
+    font-size: clamp(12px, 0.8vw, 14px);
+  }
+
+  /* the call to action's label (ArrowButton's second span) steps up with the copy */
+  .cta > span:nth-of-type(2) {
+    font-size: clamp(16px, min(1.15vw, 2.4svh), 18px);
+    letter-spacing: -0.005em;
   }
 
   .nav {
@@ -432,6 +473,110 @@
   .wrap {
     left: 71%;
     top: 47.5%;
+  }
+}
+
+/* tablets in portrait: wide enough for the desktop reading sizes, still the stacked layout */
+@media (min-width: 600px) and (max-width: 899.98px) and (min-height: 800px) {
+  .kicker {
+    font-size: 13px;
+  }
+
+  .headline {
+    font-size: clamp(40px, 6vw, 56px);
+  }
+
+  .count {
+    font-size: 13px;
+  }
+
+  .title {
+    font-size: clamp(32px, 5vw, 44px);
+  }
+
+  .description {
+    font-size: clamp(16px, 2.2vw, 19px);
+  }
+
+  .value {
+    font-size: clamp(26px, 3.6vw, 34px);
+  }
+
+  .metricLabel,
+  .tags,
+  .nav button {
+    font-size: 12px;
+  }
+
+  .tags {
+    gap: 6px 16px;
+  }
+
+  .cta > span:nth-of-type(2) {
+    font-size: 17px;
+  }
+}
+
+/* short desktop windows (a laptop with its browser chrome): the same system, one step down */
+@media (min-width: 900px) and (max-height: 780px) {
+  .kicker {
+    font-size: 12px;
+  }
+
+  .intro {
+    gap: 14px;
+  }
+
+  .headline {
+    font-size: clamp(30px, min(4vw, 6svh), 52px);
+  }
+
+  .title {
+    font-size: clamp(23px, min(2.8vw, 4.3svh), 38px);
+  }
+
+  .description {
+    font-size: clamp(14px, min(1.15vw, 2.2svh), 16.5px);
+    line-height: 1.5em;
+  }
+
+  .value {
+    font-size: clamp(21px, min(2vw, 3.4svh), 32px);
+  }
+
+  .metricLabel,
+  .tags,
+  .nav button,
+  .count {
+    font-size: 11.5px;
+  }
+
+  .cta > span:nth-of-type(2) {
+    font-size: 16px;
+  }
+
+  .nav {
+    margin-top: clamp(12px, 2.4svh, 16px);
+    padding-top: 12px;
+  }
+
+  .nav ul {
+    gap: 4px 28px;
+  }
+}
+
+/* very short windows */
+@media (min-width: 900px) and (max-height: 640px) {
+  .headline {
+    font-size: clamp(27px, 5.2svh, 40px);
+  }
+
+  .title {
+    font-size: clamp(21px, 3.9svh, 30px);
+  }
+
+  .value {
+    font-size: clamp(19px, 3.1svh, 26px);
   }
 }
 
@@ -509,6 +654,7 @@
   .cta {
     height: 40px;
     padding: 4px 4px 4px 14px;
+    margin-left: -14px;
   }
 
   .description {
@@ -560,6 +706,26 @@
   .scene {
     --S: min(34vw, 15.5svh);
     min-height: 120px;
+  }
+}
+
+/* ...and their type steps down with them (portrait only: landscape phones have their own sizes above) */
+@media (max-width: 899.98px) and (max-height: 720px) and (orientation: portrait) {
+  .headline {
+    font-size: clamp(26px, 8.2vw, 34px);
+  }
+
+  .title {
+    font-size: clamp(22px, 6.4vw, 28px);
+  }
+
+  .description {
+    font-size: 14px;
+    line-height: 1.45em;
+  }
+
+  .value {
+    font-size: clamp(20px, 5.6vw, 24px);
   }
 }
 

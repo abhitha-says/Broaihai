@@ -1,3 +1,4 @@
+import { contactCta } from './site'
 import quotient from '@/assets/images/clients/quotient.png'
 import capsule from '@/assets/images/clients/capsule.png'
 import featherdev from '@/assets/images/clients/featherdev.png'
@@ -6,7 +7,6 @@ import epicurious from '@/assets/images/clients/epicurious.png'
 import sisyphus from '@/assets/images/clients/sisyphus.png'
 import commandR from '@/assets/images/clients/command-r.png'
 import galileo from '@/assets/images/clients/galileo.png'
-import { contactCta } from './site'
 import type { ComparisonRow, Picture, Stat, WordPair } from './types'
 
 export const hero = {
@@ -17,6 +17,16 @@ export const hero = {
   /** The only two calls to action in the hero. */
   projects: { label: 'View our projects', href: '/projects' },
   contact: { label: 'Contact', href: contactCta.href },
+}
+
+/** The desktop hero (1200px and wider): the logo, a headline, one line and two actions beside the orbiting cards. */
+export const heroWide = {
+  /** The headline, one entry per line; the phrase in `accent` is lit champagne. */
+  headline: ['The Bro Behind', 'Your Next Big Idea.'],
+  accent: 'Big Idea',
+  support: 'We design and build the websites, products and AI systems your idea deserves, from first sketch to launch.',
+  projects: { label: 'View Our Projects', href: '/projects' },
+  services: { label: 'Explore Services', href: '/#services' },
 }
 
 export const clients = {
