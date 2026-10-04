@@ -13,7 +13,7 @@
   .stage {
     display: block;
     position: absolute;
-    right: 0;
+    right: 3.5vw;
     top: 50%;
     width: clamp(540px, 43vw, 820px);
     aspect-ratio: 1 / 0.86;
