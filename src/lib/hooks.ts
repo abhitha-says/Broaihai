@@ -19,6 +19,27 @@ export function useReducedMotion() {
   )
 }
 
+/**
+ * Live result of any media query, for behaviour that differs by viewport or
+ * input (the server and the first client render both assume `false`).
+ */
+export function useMediaQuery(query: string) {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = matchMedia(query)
+      mq.addEventListener('change', onChange)
+      return () => mq.removeEventListener('change', onChange)
+    },
+    () => matchMedia(query).matches,
+    () => false,
+  )
+}
+
+/** Tablet and phone: everything under the desktop layout. */
+export const COMPACT = '(max-width: 1199.98px)'
+/** Phones only. */
+export const PHONE = '(max-width: 767.98px)'
+
 const noop = () => () => {}
 
 /**

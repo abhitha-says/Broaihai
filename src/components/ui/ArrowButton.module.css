@@ -18,8 +18,8 @@
 }
 
 /*
- * The orange square sits 8px from the right edge, 36px across, behind the 32px
- * icon. Hover opens the clip to the whole button.
+ * A champagne square sits 8px from the right edge, 36px across, behind the 32px navy
+ * icon, which leaves a hairline rim of gold. Hover opens it to the whole button.
  */
 .fill {
   position: absolute;
@@ -33,7 +33,6 @@
   position: relative;
   z-index: 1;
   color: var(--color-black);
-  transition: color var(--spring-firm-duration) var(--spring-firm);
 }
 
 .icon {
@@ -45,8 +44,8 @@
   width: 32px;
   height: 32px;
   border-radius: 3px;
-  background: var(--color-accent);
-  color: var(--color-white);
+  background: var(--brand-navy);
+  color: var(--brand-ivory);
 }
 
 .arrow {
@@ -58,16 +57,9 @@
   .button:hover .fill {
     clip-path: inset(0 0 0 0 round 3px);
   }
-
-  .button:hover .label {
-    color: var(--color-white);
-  }
 }
 
 .button:focus-visible .fill {
   clip-path: inset(0 0 0 0 round 3px);
 }
 
-.button:focus-visible .label {
-  color: var(--color-white);
-}

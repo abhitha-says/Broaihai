@@ -88,14 +88,78 @@
   }
 }
 
-/* tablet and phone use the compact card */
+/* the "see work" disc of the cursor bubble, placed on the card itself where there is no pointer */
+.hint {
+  display: none;
+}
+
+/* ---- tablet and phone: the compact card, the scroll-driven reveal and the centred state ---- */
 @media (max-width: 1199.98px) {
   .images {
+    --p: 1;
+    --card-zoom: 1;
+    --card-soft: 0px;
     border-radius: 30px;
+    /* the frame opens from a tighter, rounder window as it rises (clip-path is applied by --p only below 1) */
+    clip-path: inset(calc((1 - var(--p)) * 12%) calc((1 - var(--p)) * 7%) round calc(30px + (1 - var(--p)) * 16px));
+    transition:
+      --card-zoom var(--spring-soft-duration) var(--spring-soft),
+      --card-soft var(--spring-soft-duration) var(--spring-soft);
+  }
+
+  .cover {
+    /* the reveal's settle (scrubbed) and the centred state's zoom (eased) share the one scale */
+    scale: calc((1 + (1 - var(--p)) * 0.12) * var(--card-zoom));
+    filter: blur(var(--card-soft));
+    transition: none;
+  }
+
+  .images[data-active] {
+    --card-zoom: 1.08;
+    --card-soft: 4px;
   }
 
   .lift {
     width: 203px;
+  }
+
+  .images[data-active] .lift {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1) rotate(-3deg);
+  }
+
+  .hint {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 100px;
+    background: rgb(15 26 34 / 0.78);
+    box-shadow: 0 0 0 5px rgb(243 223 195 / 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--color-white);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+    opacity: 0;
+    scale: 0.6;
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease,
+      scale var(--spring-default-duration) var(--spring-default);
+  }
+
+  .images[data-active] .hint {
+    opacity: 1;
+    scale: 1;
   }
 
   .text {
@@ -131,4 +195,41 @@
     width: 1px;
     text-align: left;
   }
+}
+
+@media (max-width: 767.98px) {
+  .card {
+    gap: 14px;
+  }
+
+  .images {
+    border-radius: 22px;
+    clip-path: inset(calc((1 - var(--p)) * 12%) calc((1 - var(--p)) * 7%) round calc(22px + (1 - var(--p)) * 14px));
+  }
+
+  .lift {
+    width: 150px;
+    border-radius: 14px;
+  }
+
+  .hint {
+    right: 14px;
+    bottom: 14px;
+    width: 64px;
+    height: 64px;
+    font-size: 13px;
+  }
+}
+
+/* the eased custom properties behind the centred state */
+@property --card-zoom {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --card-soft {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
 }

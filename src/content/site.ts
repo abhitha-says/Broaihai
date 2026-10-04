@@ -1,16 +1,17 @@
-import logo from '@/assets/images/brand/logo.png'
-import wordmark from '@/assets/images/brand/wordmark.png'
-import footerBackground from '@/assets/images/footer/background.png'
+import logoMark from '@/assets/images/brand/bah-mark.png'
+import logoFull from '@/assets/images/brand/bah-logo.png'
+import footerBackground from '@/assets/images/footer/background.jpg'
 import type { Link, Picture } from './types'
 
 export const site = {
-  name: 'Broaihai',
+  name: 'BroAiHai',
   url: 'https://broaihai.com',
   description:
-    'Broaihai is a creative studio empowering startups and enterprises with strategy, design, and technology to create unforgettable digital experiences.',
-  logo: { src: logo, alt: 'Broaihai' } satisfies Picture,
-  wordmark: { src: wordmark, alt: '' } satisfies Picture,
-  copyright: '© 2025 Broaihai. All rights reserved.',
+    'BroAiHai is a creative studio empowering startups and enterprises with strategy, design, and technology to create unforgettable digital experiences.',
+  /** The approved BAH logo. `logo` is the monogram alone, for small spaces; `logoFull` is the lockup with the wordmark. */
+  logo: { src: logoMark, alt: 'BroAiHai' } satisfies Picture,
+  logoFull: { src: logoFull, alt: 'BroAiHai' } satisfies Picture,
+  copyright: '© 2025 BroAiHai. All rights reserved.',
 }
 
 /*

@@ -30,7 +30,7 @@
 }
 
 .dot {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .ghost span {

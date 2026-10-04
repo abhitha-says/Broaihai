@@ -1,8 +1,8 @@
 /* Opening sequence. Pairs with LoadingExperience.tsx */
 
 .loader {
-  --bg: #f7f7f7;
-  --ink: #191919;
+  --bg: var(--brand-ivory-deep);
+  --ink: var(--brand-navy);
   --ease: cubic-bezier(0.76, 0, 0.24, 1);
   --out: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -67,7 +67,7 @@
   bottom: 0;
   left: calc((var(--g) + 1) * 10%);
   width: 1px;
-  background: rgba(25, 25, 25, 0.08);
+  background: rgba(15, 26, 34, 0.08);
   opacity: 0;
   transform: scaleY(0);
   transform-origin: top;
@@ -211,7 +211,7 @@ path.screenFill {
   opacity: 1;
   /* the screen lights dark, then brightens to the page's own white as the camera dives in,
      so the dive lands on the hero's background instead of a black screen */
-  fill: #fff;
+  fill: var(--brand-ivory);
   transition:
     opacity 0.5s ease,
     fill 1.1s ease 0.65s;

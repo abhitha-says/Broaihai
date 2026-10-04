@@ -68,13 +68,13 @@ export function ProjectGallery({ project }: { project: DetailedProject }) {
     <section className={styles.section} id="visuals">
       <div className={styles.grid}>
         <Frame className={styles.wide}>
-          <Image src={wide.src} alt={wide.alt} fill sizes="(max-width: 809.98px) calc(100vw - 40px), (max-width: 1309.98px) calc(100vw - 60px), 1250px" quality={90} style={style(wide)} />
+          <Image src={wide.src} alt={wide.alt} fill sizes="(max-width: 767.98px) calc(100vw - 40px), (max-width: 1309.98px) calc(100vw - 60px), 1250px" quality={90} style={style(wide)} />
         </Frame>
         <Frame className={styles.half} lag={0.06}>
-          <Image src={a.src} alt={a.alt} fill sizes="(max-width: 809.98px) calc(100vw - 40px), (max-width: 1309.98px) calc(50vw - 45px), 610px" quality={90} style={style(a)} />
+          <Image src={a.src} alt={a.alt} fill sizes="(max-width: 767.98px) calc(100vw - 40px), (max-width: 1309.98px) calc(50vw - 45px), 610px" quality={90} style={style(a)} />
         </Frame>
         <Frame className={styles.half} lag={0.14}>
-          <Image src={b.src} alt={b.alt} fill sizes="(max-width: 809.98px) calc(100vw - 40px), (max-width: 1309.98px) calc(50vw - 45px), 610px" quality={90} style={style(b)} />
+          <Image src={b.src} alt={b.alt} fill sizes="(max-width: 767.98px) calc(100vw - 40px), (max-width: 1309.98px) calc(50vw - 45px), 610px" quality={90} style={style(b)} />
         </Frame>
       </div>
     </section>

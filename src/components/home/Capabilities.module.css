@@ -8,8 +8,10 @@
   --paper: var(--color-white);
   --ink: var(--color-ink);
   --hair: color-mix(in srgb, var(--color-ink) 12%, transparent);
-  --accent-deep: color-mix(in srgb, var(--color-accent) 68%, #000);
-  --accent-mid: color-mix(in srgb, var(--color-accent) 84%, #000);
+  /* the active plate: navy, lit on its edges by champagne; the rest rest in ivory and steel */
+  --plate-top: var(--brand-navy-raised);
+  --plate-face-y: var(--brand-navy);
+  --plate-face-x: var(--brand-graphite);
   --caption: var(--font-caption);
   position: relative;
   background: var(--color-surface);
@@ -61,7 +63,7 @@
 
 .bracket,
 .accentText {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .headline {
@@ -84,7 +86,7 @@
 }
 
 .accent {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .detail {
@@ -141,7 +143,7 @@
   font-size: clamp(24px, 7vw, 32px);
   font-weight: 700;
   line-height: 1;
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   white-space: nowrap;
 }
 
@@ -206,7 +208,7 @@
 }
 
 .nav button[aria-current='true'] .navNumber {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 @media (hover: hover) {
@@ -236,7 +238,7 @@
   width: 0;
   height: 0;
   perspective: 2600px;
-  filter: drop-shadow(0 calc(var(--S) * 0.12) calc(var(--S) * 0.1) rgba(25, 25, 25, 0.1));
+  filter: drop-shadow(0 calc(var(--S) * 0.12) calc(var(--S) * 0.1) rgba(15, 26, 34, 0.1));
 }
 
 .stack {
@@ -265,8 +267,10 @@
 
 .top {
   inset: 0;
-  background: color-mix(in srgb, var(--color-accent) calc(var(--act) * 100%), var(--paper));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink) calc(10% * (1 - var(--act))), transparent);
+  background: color-mix(in srgb, var(--plate-top) calc(var(--act) * 100%), var(--paper));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-ink) calc(10% * (1 - var(--act))), transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--brand-champagne) calc(var(--act) * 85%), transparent);
 }
 
 .grid {
@@ -287,7 +291,7 @@
   height: var(--thick);
   transform-origin: 50% 0;
   transform: rotateX(-90deg);
-  background: color-mix(in srgb, var(--accent-deep) calc(var(--act) * 100%), #cfcfca);
+  background: color-mix(in srgb, var(--plate-face-y) calc(var(--act) * 100%), color-mix(in srgb, var(--brand-steel-soft) 40%, var(--brand-ivory)));
 }
 
 /* the edge toward the bottom-left */
@@ -298,13 +302,13 @@
   height: 100%;
   transform-origin: 0 50%;
   transform: rotateY(90deg);
-  background: color-mix(in srgb, var(--accent-mid) calc(var(--act) * 100%), #e2e2dd);
+  background: color-mix(in srgb, var(--plate-face-x) calc(var(--act) * 100%), color-mix(in srgb, var(--brand-steel-soft) 22%, var(--brand-ivory)));
 }
 
 .plateNumber,
 .plateName {
   position: absolute;
-  color: color-mix(in srgb, var(--color-ink) calc(38% + var(--act) * 62%), transparent);
+  color: color-mix(in srgb, var(--brand-champagne-light) calc(var(--act) * 100%), rgb(15 26 34 / 0.42));
 }
 
 .plateNumber {
@@ -329,9 +333,9 @@
   white-space: nowrap;
 }
 
-/* ---------- tablet portrait and up: copy left, tower right ---------- */
+/* ---------- tablet portrait and up (and landscape phones): copy left, tower right ---------- */
 
-@media (min-width: 900px) {
+@media (min-width: 900px), (max-width: 1199.98px) and (max-height: 520px) and (orientation: landscape) {
   .stage {
     display: block;
     padding: 112px 0 clamp(28px, 5.5svh, 64px);
@@ -449,6 +453,94 @@
 @media (min-width: 900px) {
   .track[data-live='true'] {
     --step: 85svh;
+  }
+}
+
+/* tall tablets: the pinned stage is capped and centred, so the copy and the tower stay close */
+@media (min-width: 900px) and (max-width: 1199.98px) {
+  .track[data-live='true'] .stage {
+    top: calc((100svh - min(100svh, 920px)) / 2);
+    height: min(100svh, 920px);
+  }
+}
+
+/* a phone screen is shorter, so each service takes a little less scroll than on desktop */
+@media (max-width: 899.98px) {
+  .track[data-live='true'] {
+    --step: 62svh;
+  }
+}
+
+/* landscape phones: the side-by-side stage has to fit a short screen */
+@media (max-width: 1199.98px) and (max-height: 520px) and (orientation: landscape) {
+  .stage {
+    padding-top: 68px;
+  }
+
+  .left {
+    width: min(46%, 420px);
+    padding-left: var(--gutter);
+  }
+
+  .intro {
+    gap: 8px;
+  }
+
+  .headline {
+    font-size: clamp(22px, 7svh, 34px);
+  }
+
+  .headline span {
+    display: inline;
+  }
+
+  .headline span::after {
+    content: ' ';
+  }
+
+  .detail {
+    margin-top: 10px;
+  }
+
+  .copy {
+    gap: 6px;
+  }
+
+  .cta {
+    height: 40px;
+    padding: 4px 4px 4px 14px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+
+  .tags,
+  .metricLabel {
+    display: none;
+  }
+
+  .nav {
+    margin-top: 10px;
+    padding-top: 8px;
+  }
+
+  .nav ul {
+    grid-template-columns: repeat(6, max-content);
+    gap: 0 18px;
+  }
+
+  .navName {
+    display: none;
+  }
+
+  .scene {
+    --S: min(20vw, 36svh);
+  }
+
+  .wrap {
+    left: 74%;
+    top: 50%;
   }
 }
 

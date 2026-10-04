@@ -7,8 +7,8 @@ import { whenLoaderDone } from '@/lib/loader'
 type Ripple = { x: number; y: number; t: number; power: number }
 
 const GRID = { desktop: 32, phone: 24 }
-const IDLE = [206, 206, 206] as const
-const HOT = [255, 83, 31] as const
+const IDLE = [115, 135, 148] as const
+const HOT = [185, 156, 129] as const
 const STEPS = 28
 /** the ladder of dot colours from idle grey to brand orange, so no strings are built per frame */
 const PALETTE = Array.from({ length: STEPS + 1 }, (_, k) => {
@@ -30,6 +30,10 @@ const PUSH = 15 // px the dots lean away from the pointer
  * around it and lights them, and a click sends out a ripple. It also feeds the
  * pointer's position to the section as --px / --py (-1..1, eased) for the parallax
  * in the stylesheet. Sleeps while off screen; with reduced motion it draws once.
+ *
+ * Touch has no pointer to follow, so a finger held on the hero lights the dots
+ * under it instead, and the parallax drifts on its own slow orbit, so the mark's
+ * tilt and the light behind it keep moving on a phone the way they do under a mouse.
  */
 export function HeroField({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -66,7 +70,7 @@ export function HeroField({ className }: { className?: string }) {
       canvas.width = Math.round(w * dpr)
       canvas.height = Math.round(h * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      gap = w < 810 ? GRID.phone : GRID.desktop
+      gap = w < 768 ? GRID.phone : GRID.desktop
       cols = Math.ceil(w / gap) + 1
       rows = Math.ceil(h / gap) + 1
       left = (w - (cols - 1) * gap) / 2
@@ -129,7 +133,7 @@ export function HeroField({ className }: { className?: string }) {
           const e = energy > 1 ? 1 : energy
           const rest = calm(x, y)
           ctx.globalAlpha = rest + (1 - rest) * e
-          ctx.fillStyle = PALETTE[Math.round(e * STEPS)] ?? PALETTE[0] ?? '#ccc'
+          ctx.fillStyle = PALETTE[Math.round(e * STEPS)] ?? PALETTE[0] ?? '#738794'
           ctx.beginPath()
           ctx.arc(px, py, 1.15 + e * 2.7, 0, Math.PI * 2)
           ctx.fill()
@@ -142,6 +146,11 @@ export function HeroField({ className }: { className?: string }) {
       if (t >= beat) {
         pulse(0.85)
         beat = t + HEARTBEAT
+      }
+      // with no mouse, the parallax wanders on a slow orbit of its own
+      if (touch && !pointer.on) {
+        parallax.tx = 0.42 * Math.sin(t * 0.33)
+        parallax.ty = 0.34 * Math.sin(t * 0.21 + 1.3)
       }
       // ease the pointer, its lens and the parallax toward their targets
       pointer.sx += (pointer.x - pointer.sx) * 0.16
@@ -164,8 +173,8 @@ export function HeroField({ className }: { className?: string }) {
       frame = 0
     }
 
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== 'mouse') return
+    const touch = matchMedia('(hover: none)').matches
+    const aim = (e: PointerEvent) => {
       const box = canvas.getBoundingClientRect()
       pointer.x = e.clientX - box.left
       pointer.y = e.clientY - box.top
@@ -177,6 +186,10 @@ export function HeroField({ className }: { className?: string }) {
       parallax.tx = Math.max(-1, Math.min(1, (pointer.x / box.width) * 2 - 1))
       parallax.ty = Math.max(-1, Math.min(1, (pointer.y / box.height) * 2 - 1))
     }
+    const onMove = (e: PointerEvent) => {
+      // a mouse is followed as it moves; a finger only while it is held down
+      if (e.pointerType === 'mouse' || pointer.on) aim(e)
+    }
     const onLeave = () => {
       pointer.on = false
       parallax.tx = 0
@@ -187,6 +200,10 @@ export function HeroField({ className }: { className?: string }) {
       const box = canvas.getBoundingClientRect()
       ripples.push({ x: e.clientX - box.left, y: e.clientY - box.top, t: clock(), power: 1 })
       if (ripples.length > 8) ripples.shift()
+      if (e.pointerType !== 'mouse') aim(e)
+    }
+    const onUp = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') onLeave()
     }
 
     measure()
@@ -213,6 +230,8 @@ export function HeroField({ className }: { className?: string }) {
     host.addEventListener('pointermove', onMove, { passive: true })
     host.addEventListener('pointerleave', onLeave)
     host.addEventListener('pointerdown', onDown)
+    host.addEventListener('pointerup', onUp)
+    host.addEventListener('pointercancel', onUp)
 
     run()
     // the first pulse leaves the mark just as the page opens (after the loader, if one is playing)
@@ -234,6 +253,8 @@ export function HeroField({ className }: { className?: string }) {
       host.removeEventListener('pointermove', onMove)
       host.removeEventListener('pointerleave', onLeave)
       host.removeEventListener('pointerdown', onDown)
+      host.removeEventListener('pointerup', onUp)
+      host.removeEventListener('pointercancel', onUp)
       host.style.removeProperty('--px')
       host.style.removeProperty('--py')
     }

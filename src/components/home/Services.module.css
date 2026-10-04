@@ -50,7 +50,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(15, 26, 34, 0) 0%, rgba(15, 26, 34, 0.62) 100%);
 }
 
 .content {
@@ -107,35 +107,145 @@
   }
 }
 
+/* ---- tablet & phone: the deck ---- */
 @media (max-width: 1199.98px) {
+  .stack {
+    --deck-top: 84px;
+    --card-h: min(70svh, 720px);
+    gap: 16px;
+  }
+
+  /* every card still sticks in turn, each a few pixels lower, so the stacked edges show above the top one */
   .slot {
+    top: calc(var(--deck-top) + var(--i, 0) * 10px);
     height: auto;
+    max-height: none;
+    z-index: calc(1 + var(--i, 0));
+  }
+
+  .card {
+    height: var(--card-h);
+    border-radius: 26px;
+    transform-origin: 50% 0;
+    scale: calc(1 - var(--cover, 0) * 0.06);
+  }
+
+  /* the card beneath dims as the next one covers it */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: var(--brand-navy);
+    opacity: calc(var(--cover, 0) * 0.5);
+    pointer-events: none;
+  }
+
+  /* arriving: the photo settles out of a zoom, the backdrop a touch behind it, and the copy rises */
+  .background {
+    scale: calc(1 + (1 - var(--arrive, 1)) * 0.08);
+    transition: none;
+  }
+
+  .photo {
+    scale: calc(1 + (1 - var(--arrive, 1)) * 0.14);
+    transition: none;
   }
 
   .content {
+    translate: 0 calc((1 - var(--arrive, 1)) * 28px);
+    opacity: calc(0.3 + min(1, var(--arrive, 1) * 1.5) * 0.7);
+  }
+
+  .frame {
+    max-width: 440px;
+  }
+}
+
+/* portrait tablets and phones stack the copy over and under the photo */
+@media (max-width: 1023.98px) {
+  .content {
     flex-direction: column;
+    gap: 28px;
   }
 
   .title,
   .description {
     flex: none;
     width: 100%;
+    max-width: 520px;
     text-align: center;
   }
 
   .frame {
     flex: none;
-    width: 246px;
+    width: min(300px, 38svh);
   }
 }
 
-@media (max-width: 809.98px) {
+@media (max-width: 767.98px) {
   .container {
     gap: 40px;
   }
 
+  .stack {
+    --deck-top: 80px;
+    --card-h: min(72svh, 620px);
+    gap: 14px;
+  }
+
   .slot {
-    position: relative;
-    top: auto;
+    top: calc(var(--deck-top) + var(--i, 0) * 8px);
+  }
+
+  .card {
+    border-radius: 22px;
+  }
+
+  .content {
+    gap: 22px;
+    padding: 28px 22px;
+  }
+
+  .frame {
+    width: min(62vw, 34svh);
+  }
+
+  .photo {
+    border-radius: 16px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+}
+
+/* short screens (landscape phones): the copy sits beside the photo, as on desktop */
+@media (max-width: 1199.98px) and (max-height: 520px) {
+  .stack {
+    --deck-top: 64px;
+    --card-h: calc(100svh - 76px);
+  }
+
+  .content {
+    flex-direction: row;
+    gap: 28px;
+    padding: 24px 32px;
+  }
+
+  .title,
+  .description {
+    flex: 1 0 0;
+    width: 1px;
+    text-align: left;
+  }
+
+  .description {
+    text-align: right;
+  }
+
+  .frame {
+    flex: none;
+    width: 30svh;
   }
 }

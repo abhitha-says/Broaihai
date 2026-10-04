@@ -47,12 +47,13 @@ export function LoadingExperience() {
   const reducedMotion = useReducedMotion()
   // the loader only loads the home hero; every other page opens straight in
   const pathname = usePathname()
-  // and only on a full load that lands on the home page, never when navigating back to it
+  // and only on a full load (a refresh included) that lands on the home page. A page load gets
+  // one run: once the visitor has navigated away, going back to the home page never replays it.
   const [landedOn] = useState(pathname)
-  const reduced = reducedMotion || pathname !== '/' || landedOn !== '/'
+  const [leftHome, setLeftHome] = useState(false)
+  if (pathname !== '/' && !leftHome) setLeftHome(true)
+  const reduced = reducedMotion || pathname !== '/' || leftHome || landedOn !== '/'
   const [phase, setPhase] = useState<Phase>('initial')
-  // once per browser session: set when the sequence reaches its reveal, read here and by the pre-paint script
-  const [seen, setSeen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const screenRef = useRef<SVGPathElement>(null)
   const rigRef = useRef<HTMLDivElement>(null)
@@ -65,11 +66,10 @@ export function LoadingExperience() {
       finish()
       return
     }
-    if (sessionStorage.getItem('loader-seen')) {
-      setSeen(true)
-      finish()
-      return
-    }
+    // Hold the page's entrance animations until the reveal. The pre-paint script already did
+    // this; doing it again here matters in dev, where React runs this effect, tears it down
+    // (which releases the hold) and runs it again.
+    html.classList.add('is-loading')
 
     const timers: number[] = []
     const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms))
@@ -126,7 +126,6 @@ export function LoadingExperience() {
     if (hold === 'screen') return clear
     at(AT.reveal, () => {
       toHero()
-      sessionStorage.setItem('loader-seen', '1')
       setPhase('reveal')
       html.classList.remove('is-loading')
       html.classList.add('is-revealing')
@@ -140,7 +139,7 @@ export function LoadingExperience() {
     }
   }, [reduced])
 
-  if (reduced || seen || phase === 'complete') return null
+  if (reduced || phase === 'complete') return null
 
   const reached = ORDER.indexOf(phase)
   const cls = [styles.loader, ...ORDER.slice(1, reached + 1).map((p) => styles[p])].join(' ')

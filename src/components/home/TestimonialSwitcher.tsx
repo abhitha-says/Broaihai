@@ -28,7 +28,7 @@ export function TestimonialSwitcher({ testimonials, intro }: { testimonials: Tes
                 src={t.portrait.src}
                 alt={t.portrait.alt}
                 fill
-                sizes="(max-width: 809.98px) 100vw, (max-width: 1199.98px) 360px, 450px"
+                sizes="(max-width: 767.98px) 100vw, (max-width: 1199.98px) 360px, 450px"
                 className={styles.portraitImage}
                 data-active={i === active}
                 aria-hidden={i !== active}

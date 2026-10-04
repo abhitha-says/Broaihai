@@ -1,26 +1,65 @@
 /*
- * Design tokens, lifted from the Framer project's own variables.
+ * Design tokens: the BAH brand palette, type scale and layout. Layout values started from the Framer project's own variables.
  * Breakpoints (desktop-first, as Framer authors them):
  *   desktop  >= 1200px
- *   tablet   810px - 1199.98px   @media (max-width: 1199.98px)
- *   phone    <= 809.98px         @media (max-width: 809.98px)
+ *   tablet   768px - 1199.98px   @media (max-width: 1199.98px)
+ *   phone    <= 767.98px         @media (max-width: 767.98px)
  */
 :root {
-  /* colour */
-  --color-accent: #ff531f;
-  --color-accent-soft: #ff6a3d;
-  --color-accent-tint: #ff531f0d;
-  --color-white: #fff;
-  --color-black: #000;
-  --color-ink: #191919;
-  --color-text: #666;
-  --color-muted: #969696;
-  --color-line: #ccc;
-  --color-ghost: #e3e3e3;
-  --color-surface: #f7f7f7;
-  --color-white-20: #fff3;
-  --color-white-50: #ffffff80;
-  --color-black-30: #0000004d;
+  /*
+   * The official BroAiHai palette, extracted from the approved BAH logo. These ten values are
+   * the only brand colours on the site; nothing is approximated or substituted.
+   *
+   *   navy / steel      #0F1A22  #1F2D36  #38464F  #4F6475  #738794
+   *   champagne / warm  #7E5E42  #B99C81  #DBC1A4  #F3DFC3  #FBFBF7
+   *
+   * Components use the semantic --color-* tokens below. The only values that are not a palette
+   * hex are the surface and hairline tints, which are explicit mixes of palette colours.
+   */
+  --brand-navy: #0f1a22;
+  --brand-navy-raised: #1f2d36;
+  --brand-graphite: #38464f;
+  --brand-steel: #4f6475;
+  --brand-steel-soft: #738794;
+  --brand-champagne-deep: #7e5e42; /* accent as text on ivory (6.1:1) */
+  --brand-champagne: #b99c81; /* accent fills and indicators */
+  --brand-champagne-soft: #dbc1a4;
+  --brand-champagne-light: #f3dfc3; /* accent on navy; the logo's lit gold */
+  --brand-ivory: #fbfbf7; /* the page */
+
+  /* tints: palette colours mixed into ivory, for surfaces and hairlines only */
+  --brand-ivory-deep: color-mix(in srgb, var(--brand-champagne-light) 24%, var(--brand-ivory));
+  --brand-silver: color-mix(in srgb, var(--brand-steel-soft) 24%, var(--brand-ivory));
+  --brand-silver-soft: color-mix(in srgb, var(--brand-steel-soft) 11%, var(--brand-ivory));
+
+  /* semantic colour */
+  --color-accent: var(--brand-champagne);
+  --color-accent-soft: var(--brand-champagne-light);
+  --color-accent-text: var(--brand-champagne-deep);
+  --color-accent-tint: rgb(185 156 129 / 0.14);
+  --color-white: var(--brand-ivory);
+  --color-black: var(--brand-navy);
+  --color-ink: var(--brand-navy);
+  --color-text: var(--brand-steel); /* body copy (5.9:1 on ivory) */
+  --color-muted: var(--brand-steel-soft);
+  --color-line: color-mix(in srgb, var(--brand-steel-soft) 38%, var(--brand-ivory));
+  --color-ghost: var(--brand-silver);
+  --color-surface: var(--brand-ivory-deep);
+  --color-surface-cool: var(--brand-silver-soft);
+  --color-white-20: rgb(251 251 247 / 0.14);
+  --color-white-50: rgb(251 251 247 / 0.5);
+  --color-black-30: rgb(15 26 34 / 0.3);
+
+  /* functional states keep their own hues */
+  --color-success: #2f7a55;
+  --color-error: #b3392f;
+
+  /* focus: a champagne-deep ring that stays visible on ivory */
+  --focus-ring: 2px solid var(--brand-champagne-deep);
+
+  /* depth: shadows are navy-tinted, never black */
+  --shadow-soft: 0 1px 2px rgb(15 26 34 / 0.05), 0 12px 28px -16px rgb(15 26 34 / 0.22);
+  --shadow-lift: 0 2px 4px rgb(15 26 34 / 0.06), 0 24px 44px -22px rgb(15 26 34 / 0.34);
 
   /* type */
   --font-sans: var(--font-tasa), 'TASA Orbiter', sans-serif;
@@ -54,13 +93,19 @@
   }
 }
 
-@media (max-width: 809.98px) {
+/*
+ * Phones: the gutter tightens and the type scale turns fluid, so a 320px phone and
+ * a 740px one each get a size cut for their width instead of one fixed step.
+ */
+@media (max-width: 767.98px) {
   :root {
     --gutter: 20px;
-    --fs-display-xl: 52px;
-    --fs-display: 44px;
-    --fs-h2: 30px;
-    --fs-h3: 22px;
-    --fs-h5: 18px;
+    --section-pad: 72px;
+    --fs-display-xl: clamp(44px, 12vw, 64px);
+    --fs-display: clamp(40px, 10.6vw, 56px);
+    --fs-h2: clamp(28px, 7.6vw, 36px);
+    --fs-h3: clamp(21px, 5.6vw, 26px);
+    --fs-h4: 18px;
+    --fs-h5: 17px;
   }
 }

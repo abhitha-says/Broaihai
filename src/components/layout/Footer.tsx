@@ -35,8 +35,13 @@ export function Footer() {
           <p className={`t-body-lg-medium ${styles.copyright}`}>{site.copyright}</p>
         </div>
 
-        <div className={styles.wordmark}>
-          <Image src={site.wordmark.src} alt={site.name} sizes="(max-width: 809.98px) 350px, (max-width: 1199.98px) 750px, 1380px" className={styles.wordmarkImage} />
+        <div className={styles.brand}>
+          <Image
+            src={site.logoFull.src}
+            alt={site.logoFull.alt}
+            sizes="(max-width: 767.98px) 300px, 520px"
+            className={styles.brandImage}
+          />
         </div>
       </div>
     </footer>

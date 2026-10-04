@@ -10,8 +10,8 @@ import styles from './Difference.module.css'
  * and every title, pill and glow is a pure function of P. Nothing is timed on a clock,
  * so scrolling back up reverses the sequence exactly.
  *
- * Wide screens pin the grid for a short run while P plays out; narrower ones let each
- * panel play against its own pass through the viewport.
+ * Wide screens pin the grid for a short run while P plays out; phones (and tablets too
+ * short to hold the stage) let each panel play against its own pass through the viewport.
  *
  * The two panels tell the story: the typical agency arrives heavy and unevenly spaced,
  * slow off the mark, its tilt settling a beat after its position; Bro AI arrives on an
@@ -79,7 +79,12 @@ const PERSONALITY: Record<'typical' | 'broAi', Personality> = {
   },
 }
 
-const STAGE_QUERY = '(min-width: 810px) and (prefers-reduced-motion: no-preference)'
+/*
+ * Desktop always pins. A tablet pins in landscape, where the stage has the shape for it; in
+ * portrait the two panels flow side by side instead and play together on their shared pass.
+ */
+const STAGE_QUERY =
+  '(min-width: 1200px) and (prefers-reduced-motion: no-preference), (min-width: 768px) and (min-height: 600px) and (orientation: landscape) and (prefers-reduced-motion: no-preference)'
 const PIN_TOP = 96
 
 function subscribeStage(onChange: () => void) {

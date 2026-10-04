@@ -126,7 +126,9 @@ export function Stack() {
       y = e.clientY
       if (!raf) raf = requestAnimationFrame(run)
     }
-    const leave = () => {
+    const leave = (e?: PointerEvent) => {
+      // a lifted finger also "leaves"; the tapped tile stays marked until the next tap
+      if (e && e.pointerType !== 'mouse') return
       cancelAnimationFrame(raf)
       raf = 0
       mark(null)
@@ -135,12 +137,20 @@ export function Stack() {
         if (chip) chip.style.translate = '0px'
       })
     }
+    // on touch there is no pointer to be near: a tap marks the tile instead
+    const tap = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse') return
+      const chip = (e.target as Element).closest<HTMLElement>('[data-chip]')
+      mark(chip && !chip.hasAttribute('data-dim') ? chip : null)
+    }
     area.addEventListener('pointermove', move)
     area.addEventListener('pointerleave', leave)
+    area.addEventListener('pointerdown', tap)
     return () => {
       leave()
       area.removeEventListener('pointermove', move)
       area.removeEventListener('pointerleave', leave)
+      area.removeEventListener('pointerdown', tap)
     }
   }, [filter])
 
@@ -209,7 +219,7 @@ export function Stack() {
               className={styles.cell}
               style={{ '--i': i, '--float': `${(4.6 + ((i * 37) % 10) * 0.26).toFixed(2)}s`, '--phase': `${(-((i * 83) % 47) / 10).toFixed(1)}s` } as React.CSSProperties}
             >
-              <div className={styles.chip} data-dim={!matches(filter, i) || undefined}>
+              <div className={styles.chip} data-chip data-dim={!matches(filter, i) || undefined}>
                 <span className={styles.mark} aria-hidden>
                   {tool.mark}
                 </span>

@@ -37,7 +37,7 @@
 
 .logo {
   display: block;
-  height: 28px;
+  height: 40px;
 }
 
 .logoImage {
@@ -59,24 +59,25 @@
 
 @media (hover: hover) {
   .link:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 }
 
 .toggle,
-.menu {
+.sheet,
+.backdrop {
   display: none;
 }
 
-/* ---- tablet & phone: logo + hamburger, links fold into the pill ---- */
+/* ---- tablet & phone: logo + toggle, the links open in a sheet under the pill ---- */
 @media (max-width: 1199.98px) {
   .wrap {
     width: 100%;
   }
 
-  /* the entrance runs on desktop only */
-  .wrap:global(.appear) {
-    animation: none;
+  .nav {
+    position: relative;
+    z-index: 2;
   }
 
   .links,
@@ -85,45 +86,255 @@
   }
 
   .logo {
-    width: 139px;
-    height: 32px;
-  }
-
-  .logoImage {
-    width: 100%;
-    object-fit: contain;
+    width: auto;
+    height: 38px;
   }
 
   .toggle {
     display: block;
+    margin-right: -8px;
   }
 
-  /* The menu grows from nothing to its content height. */
-  .menu {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows var(--spring-flat-duration) var(--spring-flat);
+  /*
+   * The page dims and softens behind the sheet. The header is transformed, so a
+   * fixed child would be boxed by it; the backdrop is laid out from the pill's own
+   * corner back to the viewport's instead.
+   */
+  .backdrop {
+    position: absolute;
+    top: calc(-1 * var(--header-top));
+    left: calc(-1 * var(--gutter));
+    z-index: 0;
+    display: block;
+    width: 100vw;
+    height: 100lvh;
+    background: rgb(251 251 247 / 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    cursor: default;
+    transition: opacity 0.45s ease;
   }
 
-  .nav[data-open='true'] .menu {
-    grid-template-rows: 1fr;
+  .wrap[data-open='true'] .backdrop {
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .menuInner {
+  /* The sheet: a second pill that unrolls from under the first. */
+  .sheet {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    z-index: 1;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    min-height: 0;
+    max-height: calc(100dvh - var(--header-top) - 100% - 10px - var(--gutter));
+    border-radius: 20px;
+    background: var(--color-white);
+    box-shadow:
+      0 0 0 1px var(--color-ghost),
+      0 30px 60px -30px rgb(15 26 34 / 0.38);
+    clip-path: inset(0 0 100% 0 round 20px);
+    translate: 0 -10px;
     overflow: hidden;
+    transition:
+      clip-path 0.4s var(--spring-flat),
+      translate 0.4s var(--spring-flat);
   }
 
-  .menuLinks {
+  .wrap[data-open='true'] .sheet {
+    clip-path: inset(0 0 0 0 round 20px);
+    translate: 0 0;
+    transition:
+      clip-path 0.55s var(--spring-flat),
+      translate 0.55s var(--spring-flat);
+  }
+
+  .sheetInner {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+    min-height: 0;
+    padding: 24px 22px 22px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .sheetLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-black);
+    opacity: 0;
+    translate: 0 8px;
+    transition:
+      opacity 0.4s ease,
+      translate 0.5s var(--spring-flat);
+  }
+
+  .slashes {
+    color: var(--color-accent-text);
+  }
+
+  .sheetLinks {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 24px;
+    gap: 6px;
+  }
+
+  .sheetLink {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 4px 0;
+    color: var(--color-ink);
+    transition: color 0.3s ease;
+  }
+
+  .sheetLink[aria-current='page'] {
+    color: var(--color-accent-text);
+  }
+
+  .sheetIndex {
+    flex: none;
+    width: 1.6em;
+    font-family: var(--font-caption);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    opacity: 0;
+    transition: opacity 0.5s ease calc(220ms + var(--i) * 70ms);
+  }
+
+  /* each word rises out of its own mask, on the stagger the Stack title uses */
+  .sheetMask {
+    display: block;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+    overflow: clip;
+  }
+
+  .sheetWord {
+    display: block;
+    font-size: clamp(38px, 10.5vw, 56px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    translate: 0 112%;
+    transition: translate 0.45s cubic-bezier(0.5, 0, 0.75, 0) calc(var(--i) * 30ms);
+  }
+
+  .sheetFoot {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 22px;
+    border-top: 1px solid var(--color-ghost);
+    opacity: 0;
+    translate: 0 14px;
+    transition:
+      opacity 0.35s ease,
+      translate 0.4s var(--spring-flat);
+  }
+
+  .sheetCta {
     width: 100%;
-    padding-top: 24px;
+    justify-content: space-between;
+  }
+
+  .sheetContact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-style: normal;
+  }
+
+  .sheetMail {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .sheetPlace {
+    color: var(--color-muted);
+  }
+
+  /* ---- open ---- */
+  .wrap[data-open='true'] .sheetLabel {
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: 120ms;
+  }
+
+  .wrap[data-open='true'] .sheetIndex {
+    opacity: 1;
+  }
+
+  .wrap[data-open='true'] .sheetWord {
+    translate: 0 0;
+    transition: translate 0.9s cubic-bezier(0.2, 0.75, 0.2, 1) calc(140ms + var(--i) * 70ms);
+  }
+
+  .wrap[data-open='true'] .sheetFoot {
+    opacity: 1;
+    translate: 0 0;
+    transition:
+      opacity 0.6s ease 380ms,
+      translate 0.8s var(--spring-flat) 380ms;
+  }
+}
+
+/* ---- tablet: the sheet keeps the pill's width, links left and contact right ---- */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .sheetInner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
+    grid-template-areas:
+      'label label'
+      'links foot';
+    gap: 32px 40px;
+    padding: 28px 32px 30px;
+  }
+
+  .sheetLabel {
+    grid-area: label;
+  }
+
+  .sheetLinks {
+    grid-area: links;
+    gap: 10px;
+  }
+
+  .sheetWord {
+    font-size: clamp(48px, 7vw, 72px);
+  }
+
+  .sheetFoot {
+    grid-area: foot;
+    align-self: end;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .sheetCta {
+    width: max-content;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .sheet,
+  .sheetLabel,
+  .sheetIndex,
+  .sheetWord,
+  .sheetFoot {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
   }
 }

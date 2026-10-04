@@ -1,21 +1,24 @@
 import Image from 'next/image'
+import type { CSSProperties } from 'react'
 import { servicesIntro } from '@/content/home'
 import { services } from '@/content/services'
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
+import { ServicesDeck } from './ServicesDeck'
 import styles from './Services.module.css'
 
 /**
  * Four full-bleed cards that stick to the top of the viewport in turn, so each
- * one slides up over the last. Phones get a plain stack.
+ * one slides up over the last. Tablets and phones play the same deck at their
+ * own size: the card beneath sinks back as the next one climbs over it (ServicesDeck).
  */
 export function Services() {
   return (
     <Section id="services" className={styles.container}>
       <SectionHeading label={servicesIntro.label} title={servicesIntro.title} align="center" className={styles.heading} />
-      <ul className={styles.stack}>
-        {services.map((service) => (
-          <li key={service.title} className={styles.slot}>
+      <ServicesDeck className={styles.stack}>
+        {services.map((service, i) => (
+          <li key={service.title} className={styles.slot} style={{ '--i': i } as CSSProperties}>
             <article className={styles.card}>
               <div className={styles.background}>
                 <Image src={service.background.src} alt={service.background.alt} fill sizes="100vw" />
@@ -39,7 +42,7 @@ export function Services() {
             </article>
           </li>
         ))}
-      </ul>
+      </ServicesDeck>
     </Section>
   )
 }

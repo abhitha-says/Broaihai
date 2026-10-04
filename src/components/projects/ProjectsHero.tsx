@@ -27,7 +27,7 @@ export function ProjectsHero() {
               alt={image.alt}
               fill
               priority
-              sizes="(max-width: 809.98px) 100vw, (max-width: 1199.98px) 750px, 300px"
+              sizes="(max-width: 767.98px) 100vw, (max-width: 1199.98px) 750px, 300px"
               quality={90}
               style={{ objectPosition: image.position }}
             />

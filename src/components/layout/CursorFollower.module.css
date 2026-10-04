@@ -9,8 +9,8 @@
   width: 80px;
   height: 80px;
   border-radius: 100px;
-  background: var(--color-accent-tint);
-  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.3);
+  background: rgb(15 26 34 / 0.55);
+  box-shadow: 0 0 0 6px rgb(243 223 195 / 0.4);
   backdrop-filter: blur(50px);
   opacity: 0;
   pointer-events: none;

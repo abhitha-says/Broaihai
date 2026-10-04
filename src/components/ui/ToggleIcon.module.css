@@ -29,7 +29,7 @@
 
 .icon[data-open='true'] .bar {
   top: 21px;
-  background: var(--color-accent);
+  background: var(--color-accent-text);
 }
 
 .icon[data-open='true'] .top {

@@ -40,15 +40,15 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
+  themeColor: '#fbfbf7',
 }
 
 /**
  * Runs before first paint on a full page load only (never on client
  * navigation): holds the page's entrance animations until the loader reveals
- * them. Only the home page plays it (it loads the home hero); every other page skips it, and so does any later load in the same browser session (`loader-seen`). The 9s timeout is a failsafe if scripts never hydrate.
+ * them. Only the home page plays it (it loads the home hero); every other page skips it. Every full load of the home page plays it, a refresh included. The 9s timeout is a failsafe if scripts never hydrate.
  */
-const PRE_PAINT = `(function(){try{if(matchMedia('(prefers-reduced-motion: reduce)').matches||location.pathname!=='/')return;var h=document.documentElement;if(sessionStorage.getItem('loader-seen')){h.classList.add('loader-seen');return}h.classList.add('is-loading');setTimeout(function(){h.classList.remove('is-loading')},9000)}catch(e){}})()`
+const PRE_PAINT = `(function(){try{if(matchMedia('(prefers-reduced-motion: reduce)').matches||location.pathname!=='/')return;var h=document.documentElement;h.classList.add('is-loading');setTimeout(function(){h.classList.remove('is-loading')},9000)}catch(e){}})()`
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

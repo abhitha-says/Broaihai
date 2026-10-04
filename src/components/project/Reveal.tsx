@@ -4,9 +4,9 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { clamp01 } from '@/lib/scroll'
 
 /**
- * Scroll-linked focus pull, after the reference's copy below the hero: as the
- * block rises through the lower half of the viewport it goes from soft, faint
- * and low to sharp, solid and in place. Transform, opacity and filter only.
+ * Scroll-linked entrance for the copy below the hero: as the block rises through
+ * the lower half of the viewport it goes from faint and low to solid and in
+ * place (no blur). Transform and opacity only.
  * Without motion (or JS) it simply renders at rest.
  */
 export function Reveal({ className, children }: { className?: string; children: ReactNode }) {
@@ -23,7 +23,6 @@ export function Reveal({ className, children }: { className?: string; children: 
       // 0 while the block's top is at 98% of the viewport, 1 once it reaches 62%
       const p = clamp01((vh * 0.98 - r.top) / (vh * 0.36))
       el.style.opacity = (0.12 + 0.88 * p).toFixed(3)
-      el.style.filter = p >= 1 ? '' : `blur(${((1 - p) * 12).toFixed(1)}px)`
       el.style.translate = p >= 1 ? '' : `0 ${((1 - p) * 36).toFixed(1)}px`
     }
     const schedule = () => {

@@ -18,7 +18,7 @@ function Side({ side }: { side: 'left' | 'right' }) {
           src={left ? avatarLeft : avatarRight}
           alt=""
           priority
-          sizes="(max-width: 809.98px) 60vw, 34vw"
+          sizes="(max-width: 767.98px) 60vw, 34vw"
           className={styles.figureImage}
         />
       </div>
@@ -34,7 +34,7 @@ function Side({ side }: { side: 'left' | 'right' }) {
  * each reaching toward the screen.
  * On load the screen settles first, then the headline, the name and the panels
  * arrive in sequence (pure CSS keyframes, no loader). Like the reference, the
- * scene then scrolls away 1:1 with the page; the content below blurs into focus.
+ * scene then scrolls away 1:1 with the page; the content below rises into place.
  *
  * The screen opens the live site in a new tab on click, shows the "visit"
  * cursor and a "Visit Website" label on hover, and carries the project card's
@@ -53,8 +53,9 @@ export function ProjectHero({ project }: { project: DetailedProject }) {
     const fit = () => {
       word.style.fontSize = '100px'
       const natural = word.getBoundingClientRect().width
-      const target = (scene.clientWidth * (window.innerWidth < 810 ? 0.92 : 0.8)) / natural
-      const cqw = Math.min((100 * target * 100) / scene.clientWidth, window.innerWidth < 810 ? 24 : 17)
+      const phone = window.innerWidth < 768
+      const target = (scene.clientWidth * (phone ? 0.9 : 0.8)) / natural
+      const cqw = Math.min((100 * target * 100) / scene.clientWidth, phone ? 26 : 17)
       word.style.fontSize = `${cqw}cqw`
     }
     fit()
@@ -78,7 +79,7 @@ export function ProjectHero({ project }: { project: DetailedProject }) {
     let live = true
     const tick = () => {
       raf = 0
-      const target = Math.min(window.scrollY, scene.offsetHeight * 1.2)
+      const target = Math.min(window.scrollY, scene.offsetHeight * 1.2) * (window.innerWidth < 768 ? 0.6 : 1)
       let moving = false
       for (const s of sides) {
         const goal = -target * s.k
@@ -93,7 +94,7 @@ export function ProjectHero({ project }: { project: DetailedProject }) {
       if (!raf) raf = requestAnimationFrame(tick)
     }
     // start from wherever the page already is (reloads, back navigation)
-    for (const s of sides) s.y = -Math.min(window.scrollY, scene.offsetHeight * 1.2) * s.k
+    for (const s of sides) s.y = -Math.min(window.scrollY, scene.offsetHeight * 1.2) * (window.innerWidth < 768 ? 0.6 : 1) * s.k
     tick()
     window.addEventListener('scroll', schedule, { passive: true })
     return () => {
@@ -132,7 +133,7 @@ export function ProjectHero({ project }: { project: DetailedProject }) {
           alt={image.alt}
           fill
           priority
-          sizes="(max-width: 809.98px) calc(100vw - 40px), 50vw"
+          sizes="(max-width: 767.98px) calc(100vw - 40px), 50vw"
           quality={90}
           style={image.position ? { objectPosition: image.position } : undefined}
         />

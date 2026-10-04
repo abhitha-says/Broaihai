@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import { hero } from '@/content/home'
-import { MARK_PATH, MARK_VIEWBOX } from '@/components/ui/BrandMark'
+import Image from 'next/image'
+import { site } from '@/content/site'
 import { HeroButton } from './HeroButton'
 import { HeroField } from './HeroField'
 import { Typewriter } from './Typewriter'
@@ -39,38 +40,9 @@ export function Hero() {
         <div className={styles.lockup}>
           <span className={styles.orbit} aria-hidden />
           <div className={styles.tile} style={{ '--d': '0s' } as CSSProperties} data-hero-origin>
-            <svg viewBox={MARK_VIEWBOX} className={styles.mark} aria-hidden>
-              <defs>
-                <linearGradient id="hero-mark-fill" x1="1" y1="0" x2="0" y2="1">
-                  <stop offset="0" stopColor="#ff6b22" />
-                  <stop offset="0.5" stopColor="#fd5212" />
-                  <stop offset="1" stopColor="#f23c0a" />
-                </linearGradient>
-                <linearGradient id="hero-mark-glint" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stopColor="#fff" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#fff" stopOpacity="0.85" />
-                  <stop offset="1" stopColor="#fff" stopOpacity="0" />
-                </linearGradient>
-                <clipPath id="hero-mark-clip">
-                  <path d={MARK_PATH} />
-                </clipPath>
-              </defs>
-              <path d={MARK_PATH} className={styles.markFill} fill="url(#hero-mark-fill)" />
-              <g clipPath="url(#hero-mark-clip)">
-                <g transform="rotate(20 250 347)">
-                  <rect className={styles.glint} x="-330" y="-220" width="200" height="1160" fill="url(#hero-mark-glint)" />
-                </g>
-              </g>
-              <path
-                d={MARK_PATH}
-                className={styles.markDraw}
-                pathLength={1}
-                fill="none"
-                stroke="#ff531f"
-                strokeWidth="12"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <span className={styles.mark} style={{ '--logo': `url(${site.logo.src.src})` } as CSSProperties} aria-hidden>
+              <Image src={site.logo.src} alt="" fill priority sizes="(max-width: 767.98px) 86vw, 600px" className={styles.markFill} />
+            </span>
           </div>
         </div>
 
