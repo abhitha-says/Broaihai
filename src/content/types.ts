@@ -42,6 +42,11 @@ export type Project = {
   category: string
   /** The cover on the cards and the main screen on the project page. */
   image: Picture
+  /**
+   * The live site as it looks on a phone (a portrait capture, shown whole). The card on
+   * desktop hover is built from it; a project without one just gets the plain cover.
+   */
+  mobile?: StaticImageData
   /** A looping clip that replaces the cover inside the hero screen (the cover stays its poster). */
   heroVideo?: string
   /** Colours for the big name in the hero, top to bottom; defaults to the Velory blue. */

@@ -25,22 +25,32 @@
 }
 
 .cover img,
-.lift img {
+.phone img {
   object-fit: cover;
 }
 
-/* the lifted copy: 300 x 340, scaled to 330 x 374, invisible until hover */
-.lift {
+/*
+ * The live site on a phone, invisible until hover. It is sized by its height (the
+ * width follows the screenshot's own proportions) and the cover is always wider than
+ * it is tall, so the whole screen sits inside the frame with room on every side, even
+ * when it grows to its tilted, full size. Nothing is cropped: the screen is shown as
+ * captured, inside a thin bezel drawn with shadows so it can follow the rounded corners.
+ */
+.phone {
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 1;
-  width: 300px;
-  aspect-ratio: 0.882353;
-  border-radius: 20px;
+  height: min(82%, 440px);
+  border-radius: 12% / 5.5%;
   overflow: clip;
+  background: #11161d;
+  box-shadow:
+    0 0 0 5px #11161d,
+    0 0 0 6.5px rgb(255 255 255 / 0.22),
+    0 28px 50px -12px rgb(8 14 22 / 0.55);
   opacity: 0;
-  transform: translate(-50%, -50%) scale(1.1);
+  transform: translate(-50%, -50%) scale(0.92);
   transition:
     opacity var(--spring-soft-duration) var(--spring-soft),
     transform var(--spring-soft-duration) var(--spring-soft);
@@ -76,90 +86,40 @@
   text-align: right;
 }
 
-@media (hover: hover) and (pointer: fine) {
+/* desktop only: a mouse hovering the card. A cover with a phone blurs behind it; one without just eases in. */
+@media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
   .card:hover .cover {
+    scale: 1.04;
+  }
+
+  .card:hover .withPhone .cover {
     scale: 1.1;
     filter: blur(5px);
   }
 
-  .card:hover .lift {
+  .card:hover .phone {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1.1) rotate(-3deg);
+    transform: translate(-50%, -50%) scale(1) rotate(-3deg);
   }
 }
 
-/* the "see work" disc of the cursor bubble, placed on the card itself where there is no pointer */
-.hint {
-  display: none;
-}
-
-/* ---- tablet and phone: the compact card, the scroll-driven reveal and the centred state ---- */
+/* ---- tablet and phone: the compact card and the scroll-driven reveal; no hover state, so no phone card ---- */
 @media (max-width: 1199.98px) {
   .images {
     --p: 1;
-    --card-zoom: 1;
-    --card-soft: 0px;
     border-radius: 30px;
     /* the frame opens from a tighter, rounder window as it rises (clip-path is applied by --p only below 1) */
     clip-path: inset(calc((1 - var(--p)) * 12%) calc((1 - var(--p)) * 7%) round calc(30px + (1 - var(--p)) * 16px));
-    transition:
-      --card-zoom var(--spring-soft-duration) var(--spring-soft),
-      --card-soft var(--spring-soft-duration) var(--spring-soft);
   }
 
   .cover {
-    /* the reveal's settle (scrubbed) and the centred state's zoom (eased) share the one scale */
-    scale: calc((1 + (1 - var(--p)) * 0.12) * var(--card-zoom));
-    filter: blur(var(--card-soft));
+    /* the reveal's settle, scrubbed by the scroll */
+    scale: calc(1 + (1 - var(--p)) * 0.12);
     transition: none;
   }
 
-  .images[data-active] {
-    --card-zoom: 1.08;
-    --card-soft: 4px;
-  }
-
-  .lift {
-    width: 203px;
-  }
-
-  .images[data-active] .lift {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.1) rotate(-3deg);
-  }
-
-  .hint {
-    position: absolute;
-    right: 18px;
-    bottom: 18px;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 72px;
-    height: 72px;
-    border-radius: 100px;
-    background: rgb(15 26 34 / 0.78);
-    box-shadow: 0 0 0 5px rgb(243 223 195 / 0.5);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: var(--color-white);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.25;
-    text-align: center;
-    opacity: 0;
-    scale: 0.6;
-    pointer-events: none;
-    transition:
-      opacity 0.3s ease,
-      scale var(--spring-default-duration) var(--spring-default);
-  }
-
-  .images[data-active] .hint {
-    opacity: 1;
-    scale: 1;
+  .phone {
+    display: none;
   }
 
   .text {
@@ -206,30 +166,4 @@
     border-radius: 22px;
     clip-path: inset(calc((1 - var(--p)) * 12%) calc((1 - var(--p)) * 7%) round calc(22px + (1 - var(--p)) * 14px));
   }
-
-  .lift {
-    width: 150px;
-    border-radius: 14px;
-  }
-
-  .hint {
-    right: 14px;
-    bottom: 14px;
-    width: 64px;
-    height: 64px;
-    font-size: 13px;
-  }
-}
-
-/* the eased custom properties behind the centred state */
-@property --card-zoom {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 1;
-}
-
-@property --card-soft {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 0px;
 }

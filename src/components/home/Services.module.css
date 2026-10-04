@@ -198,13 +198,16 @@
     top: calc(var(--deck-top) + var(--i, 0) * 8px);
   }
 
+  /* a card is at least the deck height, and grows with its copy so the title and the line below never touch or leave its edges */
   .card {
+    height: auto;
+    min-height: var(--card-h);
     border-radius: 22px;
   }
 
   .content {
     gap: 22px;
-    padding: 28px 22px;
+    padding: 32px 22px;
   }
 
   .frame {
@@ -217,6 +220,23 @@
 
   .description {
     font-size: 16px;
+  }
+}
+
+/* short phones: the photo and the type tighten so a whole card still fits under the header */
+@media (max-width: 767.98px) and (max-height: 700px) {
+  .content {
+    gap: 16px;
+    padding: 26px 20px;
+  }
+
+  .frame {
+    width: min(58vw, 27svh);
+  }
+
+  .description {
+    font-size: 15px;
+    line-height: 1.4;
   }
 }
 

@@ -4,17 +4,21 @@ import avpWide from '@/assets/images/projects/avp/wide.jpg'
 import avpShot1 from '@/assets/images/projects/avp/shot-1.jpg'
 import avpShot2 from '@/assets/images/projects/avp/shot-2.jpg'
 import calmtreeHero from '@/assets/images/projects/calmtree/hero.jpg'
+import calmtreeMobile from '@/assets/images/projects/calmtree/mobile.jpg'
 import calmtreeShot1 from '@/assets/images/projects/calmtree/shot-1.jpg'
 import calmtreeShot2 from '@/assets/images/projects/calmtree/shot-2.jpg'
 import plan2buildHero from '@/assets/images/projects/plan2build/hero.jpg'
+import plan2buildMobile from '@/assets/images/projects/plan2build/mobile.jpg'
 import plan2buildWide from '@/assets/images/projects/plan2build/wide.jpg'
 import plan2buildShot1 from '@/assets/images/projects/plan2build/shot-1.jpg'
 import plan2buildShot2 from '@/assets/images/projects/plan2build/shot-2.jpg'
 import humanSignalsHero from '@/assets/images/projects/human-signals/hero.jpg'
+import humanSignalsMobile from '@/assets/images/projects/human-signals/mobile.jpg'
 import humanSignalsWide from '@/assets/images/projects/human-signals/wide.jpg'
 import humanSignalsShot1 from '@/assets/images/projects/human-signals/shot-1.jpg'
 import humanSignalsShot2 from '@/assets/images/projects/human-signals/shot-2.jpg'
 import humanSignals1Hero from '@/assets/images/projects/human-signals-1/hero.jpg'
+import humanSignals1Mobile from '@/assets/images/projects/human-signals-1/mobile.jpg'
 import humanSignals1Wide from '@/assets/images/projects/human-signals-1/wide.jpg'
 import humanSignals1Shot1 from '@/assets/images/projects/human-signals-1/shot-1.jpg'
 import humanSignals1Shot2 from '@/assets/images/projects/human-signals-1/shot-2.jpg'
@@ -65,6 +69,7 @@ export const projects: Project[] = [
     year: 2026,
     category: 'Web Platform',
     image: { src: calmtreeHero, alt: 'Calmtree homepage: "Understand your patterns. Take a better next step." over an illustrated pixel-art forest and lake' },
+    mobile: calmtreeMobile,
     heroVideo: '/videos/calmtree.mp4',
     // the green of Calmtree's own buttons
     wordColors: ['#1f3d2b', '#3e6c4c'],
@@ -103,6 +108,7 @@ export const projects: Project[] = [
     year: 2026,
     category: 'Web Platform',
     image: { src: plan2buildHero, alt: 'Plan2Build homepage: "Know what your home should cost before you build it" over a modern house' },
+    mobile: plan2buildMobile,
     detail: {
       tagline: 'Know what your home should cost before you build it.',
       website: 'https://p2b-phi.vercel.app/',
@@ -143,6 +149,7 @@ export const projects: Project[] = [
       // the statement on the left and the figure on the right both stay in the card's crop
       position: '25% 50%',
     },
+    mobile: humanSignalsMobile,
     heroVideo: '/videos/human-signals.mp4',
     detail: {
       tagline: 'Because people are more than data.',
@@ -178,6 +185,7 @@ export const projects: Project[] = [
     year: 2026,
     category: 'Web Design',
     image: { src: humanSignals1Hero, alt: 'Human Signals 1 homepage: "Human psychology, behaviour, choices, signals" in acid-green type among photographs on dark green' },
+    mobile: humanSignals1Mobile,
     heroVideo: '/videos/human-signals-1.mp4',
     detail: {
       tagline: 'A photographic, dark-green edition of Human Signals.',

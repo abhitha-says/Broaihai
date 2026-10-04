@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { stackIntro } from '@/content/home'
 import { stackFilters, tools, type StackFilter } from '@/content/stack'
 import { Section } from '@/components/ui/Section'
+import { StackIcon } from './StackIcons'
 import { useHydrated } from '@/lib/hooks'
 import { Counter } from './Counter'
 import styles from './Stack.module.css'
@@ -221,7 +222,7 @@ export function Stack() {
             >
               <div className={styles.chip} data-chip data-dim={!matches(filter, i) || undefined}>
                 <span className={styles.mark} aria-hidden>
-                  {tool.mark}
+                  {tool.icon ? <StackIcon id={tool.icon} /> : tool.mark}
                 </span>
                 <span className={styles.text}>
                   <b>{tool.name}</b>
