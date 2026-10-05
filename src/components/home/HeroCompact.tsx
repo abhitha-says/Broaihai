@@ -21,7 +21,7 @@ function Spark({ className }: { className: string }) {
   )
 }
 
-/** The hero below 1200px (tablet and phone): the logo, the name, one typed line and two actions over a living dot field. */
+/** The hero at every width: the logo, the name, one typed line and two actions over a living dot field. */
 export function HeroCompact() {
   let n = 0
   const words = hero.name.map((word) =>
