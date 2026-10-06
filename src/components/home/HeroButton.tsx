@@ -5,21 +5,24 @@ import { useRef, type CSSProperties, type PointerEvent } from 'react'
 import { ArrowRight } from '@/components/ui/icons'
 
 type Props = {
-  /** The CSS module of the hero it sits in (the compact and the desktop hero each style their own buttons). */
+  /** The CSS module of the hero it sits in. */
   styles: Record<string, string>
   href: string
   label: string
-  /** `solid` is the primary action (ink, fills orange); `ghost` the secondary (outlined, fills ink). */
+  /** `solid` is the primary action (navy, fills electric blue); `ghost` the secondary (white with a navy hairline, a faint blue wash on hover). */
   variant: 'solid' | 'ghost'
   /** Seconds after the loader lifts before the button rises in. */
   delay: number
+  /** Whether the arrow square sits at the end of the label. Without it the button is plain text, padded evenly. */
+  arrow?: boolean
 }
 
 /**
  * A hero call to action. A mouse pulls it a little toward the pointer, the label
- * rolls up to a copy of itself, and the fill grows out of the arrow square.
+ * rolls up to a copy of itself, and the fill grows out of the arrow square (or in from the
+ * right edge when there is no arrow).
  */
-export function HeroButton({ styles, href, label, variant, delay }: Props) {
+export function HeroButton({ styles, href, label, variant, delay, arrow = true }: Props) {
   const ref = useRef<HTMLAnchorElement>(null)
 
   const pull = (e: PointerEvent<HTMLAnchorElement>) => {
@@ -41,7 +44,7 @@ export function HeroButton({ styles, href, label, variant, delay }: Props) {
       <Link
         ref={ref}
         href={href}
-        className={`${styles.btn} ${variant === 'solid' ? styles.solid : styles.ghost}`}
+        className={`${styles.btn} ${variant === 'solid' ? styles.solid : styles.ghost}${arrow ? '' : ` ${styles.plain}`}`}
         onPointerMove={pull}
         onPointerLeave={release}
       >
@@ -52,9 +55,11 @@ export function HeroButton({ styles, href, label, variant, delay }: Props) {
             {label}
           </span>
         </span>
-        <span className={styles.icon} aria-hidden>
-          <ArrowRight className={styles.arrow} />
-        </span>
+        {arrow && (
+          <span className={styles.icon} aria-hidden>
+            <ArrowRight className={styles.arrow} />
+          </span>
+        )}
       </Link>
     </li>
   )

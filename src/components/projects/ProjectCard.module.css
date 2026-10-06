@@ -44,11 +44,11 @@
   height: min(82%, 440px);
   border-radius: 12% / 5.5%;
   overflow: clip;
-  background: #11161d;
+  background: var(--brand-navy);
   box-shadow:
-    0 0 0 5px #11161d,
-    0 0 0 6.5px rgb(255 255 255 / 0.22),
-    0 28px 50px -12px rgb(8 14 22 / 0.55);
+    0 0 0 5px var(--brand-navy),
+    0 0 0 6.5px rgb(var(--brand-white-rgb) / 0.22),
+    0 28px 50px -12px rgb(var(--brand-navy-rgb) / 0.55);
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.92);
   transition:

@@ -103,3 +103,27 @@ export type ComparisonRow = {
 
 /** One phrase in a scrolling word line: a solid word, then a ghosted one. */
 export type WordPair = readonly [strong: string, ghost: string]
+
+/** One card of the hero's orbit. */
+export type HeroCard = {
+  number: string
+  title: string
+  line: string
+  /** Which of the small line drawings sits in its corner (see HeroOrbit). */
+  glyph: 'product' | 'ai' | 'web' | 'mobile' | 'automation'
+}
+
+/** One step of How We Work. */
+export type ProcessStep = {
+  number: string
+  title: string
+  body: string
+}
+
+/** One card of What We Build. */
+export type BuildItem = {
+  title: string
+  body: string
+  /** Which of the line icons sits on the card (see BuildIcons). */
+  icon: 'software' | 'mobile' | 'web' | 'platform' | 'agent' | 'automation'
+}

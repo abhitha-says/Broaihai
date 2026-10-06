@@ -1,22 +1,32 @@
+/* The site's one full navy section: deep navy, white type, electric blue for the few things that glow. */
 .footer {
   position: relative;
   display: flex;
   padding: 80px 0;
   border-radius: 50px 50px 0 0;
+  background: var(--brand-navy);
+  color: var(--color-white);
   overflow: clip;
   scroll-margin-top: 0;
 }
 
-.background {
-  z-index: 1;
-  object-fit: cover;
-}
-
-.overlay {
+/* the logo's dark blue lifting out of the navy at one corner, and a hairline of electric blue on the top edge */
+.atmosphere {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(to bottom, rgb(15 26 34 / 0.5), rgb(15 26 34 / 0.78));
+  pointer-events: none;
+  background:
+    radial-gradient(56% 90% at 92% -10%, rgb(var(--brand-dark-blue-rgb) / 0.95), transparent 72%),
+    radial-gradient(40% 60% at 6% 108%, rgb(var(--brand-dark-blue-rgb) / 0.55), transparent 70%);
+}
+
+.atmosphere::before {
+  content: '';
+  position: absolute;
+  inset: 0 12% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(var(--brand-blue-rgb) / 0.9), transparent);
 }
 
 .container {
@@ -80,7 +90,7 @@
 }
 
 .detailLabel {
-  color: var(--color-surface);
+  color: var(--brand-blue-soft);
 }
 
 .detailValue {
@@ -100,6 +110,7 @@
   padding: 24px;
   border-radius: 14px;
   background: var(--color-white-20);
+  box-shadow: inset 0 0 0 1px rgb(var(--brand-white-rgb) / 0.1);
   backdrop-filter: blur(10px);
 }
 
@@ -128,7 +139,7 @@
 
 /*
  * The logo's navy would vanish on the dark footer, and it must not be recoloured, so it sits
- * on a warm ivory plate: a lit panel under the contact details, with a hairline of champagne.
+ * on a white plate: a lit panel under the contact details, with a hairline of electric blue.
  */
 .brand {
   display: flex;
@@ -136,10 +147,10 @@
   width: 100%;
   padding: clamp(28px, 4vw, 52px);
   border-radius: 24px;
-  background: linear-gradient(170deg, var(--brand-ivory) 0%, var(--brand-ivory-deep) 100%);
+  background: linear-gradient(170deg, var(--brand-white) 0%, var(--brand-mist) 100%);
   box-shadow:
-    inset 0 0 0 1px rgb(185 156 129 / 0.45),
-    0 30px 60px -30px rgb(15 26 34 / 0.6);
+    inset 0 0 0 1px rgb(var(--brand-blue-rgb) / 0.35),
+    0 30px 60px -30px rgb(var(--brand-navy-rgb) / 0.6);
 }
 
 .brandImage {
@@ -149,7 +160,7 @@
 
 @media (hover: hover) {
   .detailValue a:hover {
-    color: var(--brand-champagne-light);
+    color: var(--brand-blue-glow);
   }
 
   .back:hover {

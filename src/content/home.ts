@@ -1,4 +1,4 @@
-import { contactCta } from './site'
+import { contact, contactCta } from './site'
 import quotient from '@/assets/images/clients/quotient.png'
 import capsule from '@/assets/images/clients/capsule.png'
 import featherdev from '@/assets/images/clients/featherdev.png'
@@ -7,26 +7,27 @@ import epicurious from '@/assets/images/clients/epicurious.png'
 import sisyphus from '@/assets/images/clients/sisyphus.png'
 import commandR from '@/assets/images/clients/command-r.png'
 import galileo from '@/assets/images/clients/galileo.png'
-import type { ComparisonRow, Picture, Stat, WordPair } from './types'
+import type { ComparisonRow, HeroCard, Picture, ProcessStep, Stat, WordPair, BuildItem } from './types'
 
 export const hero = {
-  /** The company name, one entry per word: "Bro AI Hai". The middle word gets the orange chip. */
-  name: ['Bro', 'AI', 'Hai'],
-  /** Typed out letter by letter; the words in `accent` take the brand orange. */
-  tagline: { text: 'The Bro Behind Your Next Big Idea', accent: ['Bro'] },
-  /** The only two calls to action in the hero. */
-  projects: { label: 'View our projects', href: '/projects' },
-  contact: { label: 'Contact', href: contactCta.href },
-}
-
-/** The desktop hero (1200px and wider): the logo, a headline, one line and two actions beside the orbiting cards. */
-export const heroWide = {
-  /** The headline, one entry per line; the phrase in `accent` is lit champagne. */
-  headline: ['The Bro Behind', 'Your Next Big Idea.'],
-  accent: 'Big Idea',
+  /** The headline, typed letter by letter; the words in `accent` are lit electric blue. */
+  headline: 'The Bro Behind Your Next Big Idea.',
+  accent: ['Big', 'Idea.'],
   support: 'We design and build the websites, products and AI systems your idea deserves, from first sketch to launch.',
-  projects: { label: 'View Our Projects', href: '/projects' },
-  services: { label: 'Explore Services', href: '/#services' },
+  /**
+   * The only two calls to action in the hero. `book` goes to the contact section until a
+   * booking link (Calendly or similar) exists; swap its `href` for that link when it does.
+   */
+  book: { label: 'Book a 15-Min Fix', href: contactCta.href },
+  tell: { label: 'Tell Us What You Need', href: contact.email.href },
+  /** The cards that circle beside the copy, in their order round the orbit. */
+  cards: [
+    { number: '01', title: 'Digital Products', line: 'Products people actually use.', glyph: 'product' },
+    { number: '02', title: 'AI Systems', line: 'Intelligence built into the workflow.', glyph: 'ai' },
+    { number: '03', title: 'Web Experiences', line: 'Digital experiences that perform.', glyph: 'web' },
+    { number: '04', title: 'Mobile Apps', line: 'Built for the pocket.', glyph: 'mobile' },
+    { number: '05', title: 'Automation', line: 'Work that runs itself.', glyph: 'automation' },
+  ] satisfies HeroCard[],
 }
 
 export const clients = {
@@ -94,6 +95,33 @@ export const capabilitiesIntro = {
   /** The headline's three lines; the last one takes the accent. */
   lines: ['Everything', 'a product', 'needs.'],
   cta: { label: 'Start a project', href: '#contact' },
+}
+
+/** What the studio builds, in the client's words and order; every card leads to the contact section. */
+export const build = {
+  label: 'What We Build',
+  title: 'End-to-end technology solutions tailored to your business goals.',
+  items: [
+    { title: 'Custom Software', body: 'Business-specific solutions built around your workflows.', icon: 'software' },
+    { title: 'Mobile Apps', body: 'iOS and Android apps that your users love.', icon: 'mobile' },
+    { title: 'Web Apps', body: 'Modern, secure and high-performance web applications.', icon: 'web' },
+    { title: 'Tools & Platforms', body: 'Specialised tools to solve real business problems.', icon: 'platform' },
+    { title: 'AI Agents', body: 'Automate work, make smarter decisions and unlock productivity.', icon: 'agent' },
+    { title: 'Automation & Integrations', body: 'Connect your existing tools and streamline your workflows.', icon: 'automation' },
+  ] satisfies BuildItem[],
+  cta: contactCta,
+}
+
+/** The four steps from idea to launch, in the client's words. */
+export const process = {
+  label: 'How We Work',
+  title: 'From idea to impact, in a few simple steps.',
+  steps: [
+    { number: '01', title: 'Understand', body: 'We deep dive into your problem and goals.' },
+    { number: '02', title: 'Design', body: 'We propose the right solution, architecture and plan.' },
+    { number: '03', title: 'Build', body: 'We develop, test and refine with you.' },
+    { number: '04', title: 'Deliver & Support', body: 'We launch and stay with you for continuous improvement.' },
+  ] satisfies ProcessStep[],
 }
 
 export const workIntro = {

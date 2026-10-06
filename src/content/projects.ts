@@ -1,4 +1,3 @@
-import heroStudio from '@/assets/images/projects/hero-studio.jpg'
 import avpHero from '@/assets/images/projects/avp/hero.jpg'
 import avpWide from '@/assets/images/projects/avp/wide.jpg'
 import avpShot1 from '@/assets/images/projects/avp/shot-1.jpg'
@@ -22,7 +21,7 @@ import humanSignals1Mobile from '@/assets/images/projects/human-signals-1/mobile
 import humanSignals1Wide from '@/assets/images/projects/human-signals-1/wide.jpg'
 import humanSignals1Shot1 from '@/assets/images/projects/human-signals-1/shot-1.jpg'
 import humanSignals1Shot2 from '@/assets/images/projects/human-signals-1/shot-2.jpg'
-import type { DetailedProject, Picture, Project } from './types'
+import type { DetailedProject, Project } from './types'
 
 /**
  * Newest first; the home page shows the first six. The first four are live
@@ -228,11 +227,6 @@ export const projectsPage = {
   title: 'Turning Vision Into Tangible Results',
   cta: { label: 'Start Your Project', href: '#contact' },
   intro: 'At Broaihai, we craft digital experiences blending strategy, creativity, and technology to build inspiring brands.',
-  image: {
-    src: heroStudio,
-    alt: 'Modern office space with abstract art, dark blue walls, and desks.',
-    position: '45.9% 69.3%',
-  } satisfies Picture,
   closing: 'Discover how our creative services bring ideas to life.',
   closingCta: { label: 'View All Services', href: '/#services' },
 }

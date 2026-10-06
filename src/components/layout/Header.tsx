@@ -13,7 +13,7 @@ import styles from './Header.module.css'
  * A floating pill. Desktop shows the links inline; below 1200px they fold into a
  * menu sheet that drops in under the pill: the page dims behind it, the links rise
  * out of their masks one after another (the same move as the Stack title) and the
- * contact details settle in last. The toggle's bars cross into the orange X.
+ * contact details settle in last. The toggle's bars cross into the blue X.
  */
 export function Header() {
   const [open, setOpen] = useState(false)
@@ -49,13 +49,17 @@ export function Header() {
       <nav className={styles.nav} data-open={open} aria-label="Main">
         <div className={styles.bar}>
           <Link href="/#hero" className={styles.logo} onClick={close}>
-            <Image src={site.logo.src} alt={site.logo.alt} priority sizes="120px" className={styles.logoImage} />
+            <Image src={site.logoFull.src} alt={site.logoFull.alt} priority sizes="160px" className={styles.logoImage} />
           </Link>
 
           <ul className={styles.links}>
             {navigation.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className={`t-body-medium ${styles.link}`}>
+                <Link
+                  href={item.href}
+                  className={`t-body-medium ${styles.link}`}
+                  aria-current={current(item.href) ? 'page' : undefined}
+                >
                   {item.label}
                 </Link>
               </li>

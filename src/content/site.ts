@@ -1,6 +1,5 @@
-import logoMark from '@/assets/images/brand/bah-mark.png'
-import logoFull from '@/assets/images/brand/bah-logo.png'
-import footerBackground from '@/assets/images/footer/background.jpg'
+import logoMark from '@/assets/images/brand/broaihai-mark.png'
+import logoFull from '@/assets/images/brand/broaihai-logo.png'
 import type { Link, Picture } from './types'
 
 export const site = {
@@ -8,7 +7,7 @@ export const site = {
   url: 'https://broaihai.com',
   description:
     'BroAiHai is a creative studio empowering startups and enterprises with strategy, design, and technology to create unforgettable digital experiences.',
-  /** The approved BAH logo. `logo` is the monogram alone, for small spaces; `logoFull` is the lockup with the wordmark. */
+  /** The BroAiHai logo, as supplied (transparent background, colours untouched). `logo` is the monogram alone, for small spaces; `logoFull` is the lockup with the wordmark. */
   logo: { src: logoMark, alt: 'BroAiHai' } satisfies Picture,
   logoFull: { src: logoFull, alt: 'BroAiHai' } satisfies Picture,
   copyright: '© 2025 BroAiHai. All rights reserved.',
@@ -30,11 +29,4 @@ export const contact = {
   email: { label: 'Email', value: 'broaihai@gmail.com', href: 'mailto:broaihai@gmail.com' },
   phone: { label: 'Phone number', value: 'Coming soon', href: '' },
   location: { label: 'Location', value: 'Mumbai, India', href: 'https://maps.google.com/?q=Mumbai+India' },
-}
-
-export const footer = {
-  background: {
-    src: footerBackground,
-    alt: '',
-  } satisfies Picture,
 }

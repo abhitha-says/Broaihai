@@ -1,5 +1,5 @@
 /*
- * Design tokens: the BAH brand palette, type scale and layout. Layout values started from the Framer project's own variables.
+ * Design tokens: the BroAiHai brand palette, type scale and layout. Layout values started from the Framer project's own variables.
  * Breakpoints (desktop-first, as Framer authors them):
  *   desktop  >= 1200px
  *   tablet   768px - 1199.98px   @media (max-width: 1199.98px)
@@ -7,59 +7,65 @@
  */
 :root {
   /*
-   * The official BroAiHai palette, extracted from the approved BAH logo. These ten values are
-   * the only brand colours on the site; nothing is approximated or substituted.
+   * THE BROAIHAI PALETTE. Four values, each the median colour of a region of the logo
+   * (`brand/broaihai-logo.png`); the whole site is built from them and from mixes of them.
+   * Nothing else is a brand colour: no stock blue, no cyan, no purple.
    *
-   *   navy / steel      #0F1A22  #1F2D36  #38464F  #4F6475  #738794
-   *   champagne / warm  #7E5E42  #B99C81  #DBC1A4  #F3DFC3  #FBFBF7
+   *   navy       #061A33   the wordmark ("bro", "hai")           authority, text, dark surfaces
+   *   blue       #005FFE   "ai" and the monogram's bright planes  energy, interaction, accents
+   *   dark blue  #00276D   the monogram's lower plane             depth, faces, shadows
+   *   white      #FFFFFF                                          space
    *
-   * Components use the semantic --color-* tokens below. The only values that are not a palette
-   * hex are the surface and hairline tints, which are explicit mixes of palette colours.
+   * Navy carries the brand, white gives it room, blue is used sparingly so it stays valuable.
    */
-  --brand-navy: #0f1a22;
-  --brand-navy-raised: #1f2d36;
-  --brand-graphite: #38464f;
-  --brand-steel: #4f6475;
-  --brand-steel-soft: #738794;
-  --brand-champagne-deep: #7e5e42; /* accent as text on ivory (6.1:1) */
-  --brand-champagne: #b99c81; /* accent fills and indicators */
-  --brand-champagne-soft: #dbc1a4;
-  --brand-champagne-light: #f3dfc3; /* accent on navy; the logo's lit gold */
-  --brand-ivory: #fbfbf7; /* the page */
+  --brand-navy: #061a33;
+  --brand-dark-blue: #00276d;
+  --brand-blue: #005ffe;
+  --brand-white: #ffffff;
 
-  /* tints: palette colours mixed into ivory, for surfaces and hairlines only */
-  --brand-ivory-deep: color-mix(in srgb, var(--brand-champagne-light) 24%, var(--brand-ivory));
-  --brand-silver: color-mix(in srgb, var(--brand-steel-soft) 24%, var(--brand-ivory));
-  --brand-silver-soft: color-mix(in srgb, var(--brand-steel-soft) 11%, var(--brand-ivory));
+  /* the same four as channels, for translucent uses: rgb(var(--brand-blue-rgb) / 0.2) */
+  --brand-navy-rgb: 6 26 51;
+  --brand-dark-blue-rgb: 0 39 109;
+  --brand-blue-rgb: 0 95 254;
+  --brand-white-rgb: 255 255 255;
 
-  /* semantic colour */
-  --color-accent: var(--brand-champagne);
-  --color-accent-soft: var(--brand-champagne-light);
-  --color-accent-text: var(--brand-champagne-deep);
-  --color-accent-tint: rgb(185 156 129 / 0.14);
-  --color-white: var(--brand-ivory);
+  /* derived: only ever mixes of the four above */
+  --brand-navy-raised: color-mix(in srgb, var(--brand-navy) 72%, var(--brand-dark-blue)); /* a surface lifted off navy */
+  --brand-blue-glow: color-mix(in srgb, var(--brand-blue) 62%, var(--brand-white)); /* the blue, lifted: small text and marks on navy */
+  --brand-blue-soft: color-mix(in srgb, var(--brand-blue) 20%, var(--brand-white)); /* the blue as a wash */
+  --brand-mist: color-mix(in srgb, var(--brand-blue) 4%, var(--brand-white)); /* the faint cool surface */
+  --brand-slate: color-mix(in srgb, var(--brand-navy) 68%, var(--brand-white)); /* body copy (6:1 on white) */
+  --brand-slate-soft: color-mix(in srgb, var(--brand-navy) 52%, var(--brand-white)); /* muted text */
+  --brand-hairline: color-mix(in srgb, var(--brand-navy) 12%, var(--brand-white)); /* rules and borders */
+
+  /* semantic colour: components use these */
+  --color-accent: var(--brand-blue);
+  --color-accent-soft: var(--brand-blue-glow);
+  --color-accent-text: var(--brand-blue); /* blue as text on white (5.2:1) */
+  --color-accent-tint: rgb(var(--brand-blue-rgb) / 0.1);
+  --color-white: var(--brand-white);
   --color-black: var(--brand-navy);
   --color-ink: var(--brand-navy);
-  --color-text: var(--brand-steel); /* body copy (5.9:1 on ivory) */
-  --color-muted: var(--brand-steel-soft);
-  --color-line: color-mix(in srgb, var(--brand-steel-soft) 38%, var(--brand-ivory));
-  --color-ghost: var(--brand-silver);
-  --color-surface: var(--brand-ivory-deep);
-  --color-surface-cool: var(--brand-silver-soft);
-  --color-white-20: rgb(251 251 247 / 0.14);
-  --color-white-50: rgb(251 251 247 / 0.5);
-  --color-black-30: rgb(15 26 34 / 0.3);
+  --color-text: var(--brand-slate);
+  --color-muted: var(--brand-slate-soft);
+  --color-line: color-mix(in srgb, var(--brand-navy) 20%, var(--brand-white));
+  --color-ghost: color-mix(in srgb, var(--brand-navy) 8%, var(--brand-white));
+  --color-surface: var(--brand-mist);
+  --color-surface-cool: color-mix(in srgb, var(--brand-navy) 4%, var(--brand-white));
+  --color-white-20: rgb(var(--brand-white-rgb) / 0.14);
+  --color-white-50: rgb(var(--brand-white-rgb) / 0.5);
+  --color-black-30: rgb(var(--brand-navy-rgb) / 0.3);
 
   /* functional states keep their own hues */
   --color-success: #2f7a55;
   --color-error: #b3392f;
 
-  /* focus: a champagne-deep ring that stays visible on ivory */
-  --focus-ring: 2px solid var(--brand-champagne-deep);
+  /* focus: the electric blue, visible on white and on navy alike */
+  --focus-ring: 2px solid var(--brand-blue);
 
   /* depth: shadows are navy-tinted, never black */
-  --shadow-soft: 0 1px 2px rgb(15 26 34 / 0.05), 0 12px 28px -16px rgb(15 26 34 / 0.22);
-  --shadow-lift: 0 2px 4px rgb(15 26 34 / 0.06), 0 24px 44px -22px rgb(15 26 34 / 0.34);
+  --shadow-soft: 0 1px 2px rgb(var(--brand-navy-rgb) / 0.05), 0 12px 28px -16px rgb(var(--brand-navy-rgb) / 0.22);
+  --shadow-lift: 0 2px 4px rgb(var(--brand-navy-rgb) / 0.06), 0 24px 44px -22px rgb(var(--brand-navy-rgb) / 0.34);
 
   /* type */
   --font-sans: var(--font-tasa), 'TASA Orbiter', sans-serif;

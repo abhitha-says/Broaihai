@@ -8,10 +8,10 @@
  * 1:1 with the page, the left avatar rises 1.25x as fast and the right 1.35x,
  * eased in ProjectHero.tsx. */
 .hero {
-  --blue: var(--brand-steel);
+  --blue: var(--brand-slate);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
-  background: linear-gradient(180deg, var(--brand-silver) 0%, var(--brand-silver-soft) 55%, var(--color-white) 100%);
+  background: linear-gradient(180deg, var(--brand-hairline) 0%, var(--color-surface-cool) 55%, var(--color-white) 100%);
   overflow-x: clip;
 }
 
@@ -30,9 +30,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(48cqw 30cqw at 50% 40%, rgb(79 100 117 / 0.1), transparent 70%),
-    radial-gradient(30cqw 22cqw at 8% 80%, rgb(79 100 117 / 0.07), transparent 70%),
-    radial-gradient(30cqw 22cqw at 92% 80%, rgb(79 100 117 / 0.07), transparent 70%);
+    radial-gradient(48cqw 30cqw at 50% 40%, rgb(var(--brand-dark-blue-rgb) / 0.1), transparent 70%),
+    radial-gradient(30cqw 22cqw at 8% 80%, rgb(var(--brand-dark-blue-rgb) / 0.07), transparent 70%),
+    radial-gradient(30cqw 22cqw at 92% 80%, rgb(var(--brand-dark-blue-rgb) / 0.07), transparent 70%);
   animation: fade 1.4s ease-out both;
 }
 
@@ -57,7 +57,7 @@
   line-height: 0.92;
   letter-spacing: -0.05em;
   white-space: nowrap;
-  background: linear-gradient(180deg, var(--word-top, var(--brand-navy)) 8%, var(--word-bottom, var(--brand-steel)) 72%, color-mix(in srgb, var(--word-bottom, var(--brand-steel)) 45%, transparent));
+  background: linear-gradient(180deg, var(--word-top, var(--brand-navy)) 8%, var(--word-bottom, var(--brand-slate)) 72%, color-mix(in srgb, var(--word-bottom, var(--brand-slate)) 45%, transparent));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -80,13 +80,13 @@
   display: block;
   aspect-ratio: 1440 / 783;
   border-radius: 1.1cqw;
-  background: var(--brand-silver-soft);
+  background: var(--color-surface-cool);
   overflow: clip;
   isolation: isolate;
   box-shadow:
-    0 0 0 1px rgb(15 26 34 / 0.08),
-    0 2.4cqw 5cqw -1.2cqw rgb(15 26 34 / 0.28),
-    0 0.6cqw 1.6cqw rgb(15 26 34 / 0.1);
+    0 0 0 1px rgb(var(--brand-navy-rgb) / 0.08),
+    0 2.4cqw 5cqw -1.2cqw rgb(var(--brand-navy-rgb) / 0.28),
+    0 0.6cqw 1.6cqw rgb(var(--brand-navy-rgb) / 0.1);
   transition:
     scale 0.6s var(--ease-out),
     box-shadow 0.6s var(--ease-out);
@@ -109,9 +109,9 @@ a.frame:hover,
 a.frame:focus-visible {
   scale: 1.018;
   box-shadow:
-    0 0 0 1px rgb(79 100 117 / 0.3),
-    0 3.2cqw 6.5cqw -1.2cqw rgb(15 26 34 / 0.38),
-    0 0.8cqw 2cqw rgb(15 26 34 / 0.14);
+    0 0 0 1px rgb(var(--brand-dark-blue-rgb) / 0.3),
+    0 3.2cqw 6.5cqw -1.2cqw rgb(var(--brand-navy-rgb) / 0.38),
+    0 0.8cqw 2cqw rgb(var(--brand-navy-rgb) / 0.14);
 }
 
 a.frame:focus-visible {
@@ -131,10 +131,10 @@ a.frame:focus-visible {
   margin: 0 auto;
   padding: 11px 18px;
   border-radius: 999px;
-  background: rgb(251 251 247 / 0.78);
+  background: rgb(var(--brand-white-rgb) / 0.78);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 6px 24px rgb(15 26 34 / 0.18);
+  box-shadow: 0 6px 24px rgb(var(--brand-navy-rgb) / 0.18);
   color: var(--color-ink);
   font-size: 15px;
   font-weight: 500;
@@ -192,7 +192,7 @@ a.frame:focus-visible .visit {
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 1.6cqw 2.2cqw rgb(15 26 34 / 0.28));
+  filter: drop-shadow(0 1.6cqw 2.2cqw rgb(var(--brand-navy-rgb) / 0.28));
 }
 
 /* ---- facts under the scene ---- */
@@ -214,8 +214,8 @@ a.frame:focus-visible .visit {
   min-width: 180px;
   padding: 14px 20px;
   border-radius: 14px;
-  background: rgb(251 251 247 / 0.7);
-  box-shadow: 0 0 0 1px rgb(15 26 34 / 0.07);
+  background: rgb(var(--brand-white-rgb) / 0.7);
+  box-shadow: 0 0 0 1px rgb(var(--brand-navy-rgb) / 0.07);
 }
 
 .factLabel {
@@ -233,7 +233,7 @@ a.frame:focus-visible .visit {
 }
 
 .factLink {
-  color: var(--brand-champagne-deep);
+  color: var(--brand-blue);
   text-decoration: none;
 }
 
@@ -340,9 +340,9 @@ a.frame:focus-visible .visit {
 
   .atmosphere {
     background:
-      radial-gradient(90cqw 50cqw at 50% 30%, rgb(79 100 117 / 0.1), transparent 70%),
-      radial-gradient(60cqw 40cqw at 0% 95%, rgb(79 100 117 / 0.08), transparent 70%),
-      radial-gradient(60cqw 40cqw at 100% 95%, rgb(79 100 117 / 0.08), transparent 70%);
+      radial-gradient(90cqw 50cqw at 50% 30%, rgb(var(--brand-dark-blue-rgb) / 0.1), transparent 70%),
+      radial-gradient(60cqw 40cqw at 0% 95%, rgb(var(--brand-dark-blue-rgb) / 0.08), transparent 70%),
+      radial-gradient(60cqw 40cqw at 100% 95%, rgb(var(--brand-dark-blue-rgb) / 0.08), transparent 70%);
   }
 
   .stage {
@@ -353,9 +353,9 @@ a.frame:focus-visible .visit {
   .frame {
     border-radius: 3cqw;
     box-shadow:
-      0 0 0 1px rgb(15 26 34 / 0.08),
-      0 5cqw 9cqw -2cqw rgb(15 26 34 / 0.3),
-      0 1.2cqw 3cqw rgb(15 26 34 / 0.1);
+      0 0 0 1px rgb(var(--brand-navy-rgb) / 0.08),
+      0 5cqw 9cqw -2cqw rgb(var(--brand-navy-rgb) / 0.3),
+      0 1.2cqw 3cqw rgb(var(--brand-navy-rgb) / 0.1);
   }
 
   .word {
@@ -381,7 +381,7 @@ a.frame:focus-visible .visit {
   }
 
   .figureImage {
-    filter: drop-shadow(0 2.4cqw 3cqw rgb(15 26 34 / 0.26));
+    filter: drop-shadow(0 2.4cqw 3cqw rgb(var(--brand-navy-rgb) / 0.26));
   }
 
   .visit {

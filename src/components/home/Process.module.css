@@ -1,0 +1,171 @@
+/*
+ * Four steps on one rail. Each step is a numbered node and its copy; every step
+ * but the last carries the stretch of rail to the next node. Process.tsx only
+ * writes --fill (how much of that stretch is blue, 0..1) and data-lit per step,
+ * and only once it is running: without it the steps render finished.
+ */
+.container {
+  --node: 64px;
+  --gap: 32px;
+  --rail-gap: 14px;
+}
+
+.heading {
+  max-width: 640px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap);
+  width: 100%;
+}
+
+.step {
+  --fill: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.node {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--node);
+  height: var(--node);
+  border-radius: 100px;
+  font-family: var(--font-caption);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-white);
+  background: var(--color-accent);
+  box-shadow: 0 0 0 8px var(--color-accent-tint);
+  transition:
+    background-color 400ms ease,
+    color 400ms ease,
+    box-shadow 400ms ease;
+}
+
+/* from the node's right edge to the next node's left edge, a little short of both */
+.rail {
+  position: absolute;
+  top: calc(var(--node) / 2 - 1px);
+  left: calc(var(--node) + var(--rail-gap));
+  width: calc(100% + var(--gap) - var(--node) - 2 * var(--rail-gap));
+  height: 2px;
+  background: var(--color-ghost);
+  overflow: hidden;
+}
+
+.rail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  transform: scaleX(var(--fill));
+  transform-origin: left center;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.body {
+  max-width: 20em;
+  text-wrap: pretty;
+}
+
+/* not yet reached: the node waits in white with a hairline, its copy faint */
+.steps[data-live='true'] .step[data-lit='false'] .node {
+  color: var(--color-muted);
+  background: var(--color-white);
+  box-shadow: inset 0 0 0 1.5px var(--color-line);
+}
+
+.steps[data-live='true'] .step .copy {
+  transition: opacity 400ms ease;
+}
+
+.steps[data-live='true'] .step[data-lit='false'] .copy {
+  opacity: 0.4;
+}
+
+/* ---- tablet: two by two; the rail only runs between the pair on each row ---- */
+@media (max-width: 1199.98px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 48px;
+  }
+
+  .step:nth-child(2n) .rail {
+    display: none;
+  }
+}
+
+/* ---- phone: one column, the rail runs down beside the copy ---- */
+@media (max-width: 767.98px) {
+  .container {
+    --node: 52px;
+    --gap: 36px;
+    --rail-gap: 10px;
+    gap: 40px;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    row-gap: var(--gap);
+  }
+
+  .step {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .node {
+    font-size: 15px;
+    box-shadow: 0 0 0 6px var(--color-accent-tint);
+  }
+
+  .step:nth-child(2n) .rail {
+    display: block;
+  }
+
+  .rail {
+    top: calc(var(--node) + var(--rail-gap));
+    left: calc(var(--node) / 2 - 1px);
+    width: 2px;
+    height: calc(100% + var(--gap) - var(--node) - 2 * var(--rail-gap));
+  }
+
+  .rail::after {
+    transform: scaleY(var(--fill));
+    transform-origin: center top;
+  }
+
+  .copy {
+    padding-top: 12px;
+    gap: 6px;
+  }
+
+  .body {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node,
+  .copy {
+    transition: none;
+  }
+}

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { contact, footer, site } from '@/content/site'
+import { contact, site } from '@/content/site'
 import { BackToTop } from './BackToTop'
 import styles from './Footer.module.css'
 
@@ -7,8 +7,7 @@ export function Footer() {
   const details = [contact.email, contact.phone, contact.location]
   return (
     <footer id="contact" className={styles.footer}>
-      <Image src={footer.background.src} alt={footer.background.alt} fill sizes="100vw" className={styles.background} />
-      <div className={styles.overlay} aria-hidden />
+      <div className={styles.atmosphere} aria-hidden />
 
       <div className={styles.container}>
         <div className={styles.top}>

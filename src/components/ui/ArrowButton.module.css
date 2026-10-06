@@ -1,3 +1,9 @@
+/*
+ * The site's call to action. Primary: deep navy with a white label and a small electric-blue
+ * square holding the arrow; on hover the blue square opens to fill the whole button.
+ * Secondary (tone="white"): white, a navy hairline and navy type; on hover a faint blue wash
+ * and a blue hairline. Blue is the spark, never the whole button.
+ */
 .button {
   position: relative;
   display: inline-flex;
@@ -8,31 +14,25 @@
   height: 48px;
   padding: 8px 10px 8px 20px;
   border-radius: 6px;
-  background: var(--color-surface);
+  background: var(--brand-navy);
   overflow: clip;
   white-space: nowrap;
+  transition: box-shadow 0.3s ease;
 }
 
-.white {
-  background: var(--color-white);
-}
-
-/*
- * A champagne square sits 8px from the right edge, 36px across, behind the 32px navy
- * icon, which leaves a hairline rim of gold. Hover opens it to the whole button.
- */
+/* the square under the arrow; hover opens it to the whole button */
 .fill {
   position: absolute;
   inset: 0;
-  background: var(--color-accent);
-  clip-path: inset(6px 8px 6px calc(100% - 44px) round 3px);
+  background: var(--brand-blue);
+  clip-path: inset(8px 8px 8px calc(100% - 40px) round 4px);
   transition: clip-path var(--spring-firm-duration) var(--spring-firm);
 }
 
 .label {
   position: relative;
   z-index: 1;
-  color: var(--color-black);
+  color: var(--brand-white);
 }
 
 .icon {
@@ -43,9 +43,10 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 3px;
-  background: var(--brand-navy);
-  color: var(--brand-ivory);
+  border-radius: 4px;
+  background: var(--brand-blue);
+  color: var(--brand-white);
+  transition: background-color 0.3s ease;
 }
 
 .arrow {
@@ -53,13 +54,38 @@
   height: 24px;
 }
 
+/* secondary */
+.white {
+  background: var(--brand-white);
+  box-shadow: inset 0 0 0 1px var(--brand-navy);
+}
+
+.white .fill {
+  background: rgb(var(--brand-blue-rgb) / 0.1);
+}
+
+.white .label {
+  color: var(--brand-navy);
+}
+
+.white .icon {
+  background: var(--brand-navy);
+}
+
 @media (hover: hover) {
   .button:hover .fill {
-    clip-path: inset(0 0 0 0 round 3px);
+    clip-path: inset(0 0 0 0 round 4px);
+  }
+
+  .white:hover {
+    box-shadow: inset 0 0 0 1px var(--brand-blue);
+  }
+
+  .white:hover .icon {
+    background: var(--brand-blue);
   }
 }
 
 .button:focus-visible .fill {
-  clip-path: inset(0 0 0 0 round 3px);
+  clip-path: inset(0 0 0 0 round 4px);
 }
-

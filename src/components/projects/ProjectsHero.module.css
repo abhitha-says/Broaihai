@@ -67,10 +67,6 @@
   overflow: clip;
 }
 
-.photo img {
-  object-fit: cover;
-}
-
 .intro {
   width: 100%;
 }

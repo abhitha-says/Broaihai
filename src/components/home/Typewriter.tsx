@@ -7,7 +7,9 @@ import styles from './Typewriter.module.css'
 
 type Props = {
   text: string
-  /** Words that take the brand orange. */
+  /** The element it is: the hero's headline is an h1. */
+  as?: 'p' | 'h1' | 'h2'
+  /** Words that are lit in the accent colour (electric blue). */
   accent?: string[]
   /** ms to wait after the opening loader lifts (or the page mounts) before the first key is struck. */
   startDelay?: number
@@ -36,12 +38,12 @@ function keystrokes(text: string) {
 }
 
 /**
- * A line that types itself: every letter arrives on its own keystroke behind an orange
+ * A line that types itself: every letter arrives on its own keystroke behind an electric-blue
  * caret that blinks while it waits. The untyped letters are laid out but transparent,
  * so the line never reflows. It starts hidden (a stylesheet rule shows it at once for
  * reduced motion, and a <noscript> rule without JS), so it never flashes complete.
  */
-export function Typewriter({ text, accent = [], startDelay = 0, className }: Props) {
+export function Typewriter({ text, as: Tag = 'p', accent = [], startDelay = 0, className }: Props) {
   const total = text.length
   const reduced = useReducedMotion()
   const [typed, setTyped] = useState(0)
@@ -109,12 +111,12 @@ export function Typewriter({ text, accent = [], startDelay = 0, className }: Pro
   if (shown >= total) nodes.push(caret)
 
   return (
-    <p className={[styles.line, className].filter(Boolean).join(' ')} data-typewriter>
+    <Tag className={[styles.line, className].filter(Boolean).join(' ')} data-typewriter>
       <noscript>
         <style>{'[data-typewriter] span{color:inherit!important}[data-typewriter] i{display:none}'}</style>
       </noscript>
       <span className="sr-only">{text}</span>
       <span aria-hidden>{nodes}</span>
-    </p>
+    </Tag>
   )
 }

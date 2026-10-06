@@ -82,12 +82,14 @@
   isolation: isolate;
 }
 
+/* "Typical" is quiet and pale; "Bro AI" is the deep navy panel, the one that carries the brand and its blue light. */
 .typical {
-  background: var(--brand-navy);
+  background: var(--brand-mist);
+  box-shadow: inset 0 0 0 1px var(--brand-hairline);
 }
 
 .broAi {
-  background: var(--brand-ivory-deep);
+  background: var(--brand-navy);
 }
 
 /* Blurred colour fields; they drift against the scroll, slower than the pills. */
@@ -111,8 +113,7 @@
   left: 8%;
   width: 52%;
   height: 46%;
-  background: radial-gradient(circle at 40% 40%, var(--brand-steel-soft), var(--brand-graphite) 55%, transparent 72%);
-  opacity: 0.85;
+  background: radial-gradient(circle at 40% 40%, rgb(var(--brand-navy-rgb) / 0.12), transparent 70%);
 }
 
 .typical .blobB {
@@ -121,8 +122,7 @@
   right: 4%;
   width: 46%;
   height: 40%;
-  background: radial-gradient(circle, var(--brand-steel), var(--brand-navy-raised) 60%, transparent 74%);
-  opacity: 0.8;
+  background: radial-gradient(circle, rgb(var(--brand-navy-rgb) / 0.09), transparent 72%);
 }
 
 .typical .blobC {
@@ -131,38 +131,35 @@
   left: 20%;
   width: 70%;
   height: 34%;
-  background: radial-gradient(circle, var(--brand-graphite), var(--brand-navy-raised) 60%, transparent 76%);
-  opacity: 0.7;
+  background: radial-gradient(circle, rgb(var(--brand-navy-rgb) / 0.08), transparent 74%);
 }
 
+/* the Bro AI panel: electric blue as light in the dark, never as a flat fill */
 .broAi .blobA {
   --shift: -90;
   top: 4%;
   left: 20%;
   width: 56%;
   height: 50%;
-  background: radial-gradient(circle at 45% 45%, var(--brand-champagne-light), var(--brand-champagne-soft) 48%, var(--brand-champagne) 62%, transparent 74%);
-  opacity: 0.9;
+  background: radial-gradient(circle at 45% 45%, rgb(var(--brand-blue-rgb) / 0.75), rgb(var(--brand-blue-rgb) / 0.28) 52%, transparent 74%);
 }
 
 .broAi .blobB {
   --shift: 70;
   top: 30%;
   right: -6%;
-  width: 46%;
-  height: 46%;
-  background: radial-gradient(circle, var(--brand-steel-soft), var(--brand-steel) 55%, transparent 74%);
-  opacity: 0.75;
+  width: 52%;
+  height: 50%;
+  background: radial-gradient(circle, rgb(var(--brand-dark-blue-rgb) / 0.95), rgb(var(--brand-dark-blue-rgb) / 0.4) 58%, transparent 76%);
 }
 
 .broAi .blobC {
   --shift: -40;
   bottom: -8%;
   left: -4%;
-  width: 62%;
-  height: 38%;
-  background: radial-gradient(circle, var(--brand-champagne-light), var(--brand-champagne-soft) 55%, transparent 74%);
-  opacity: 0.8;
+  width: 66%;
+  height: 40%;
+  background: radial-gradient(circle, rgb(var(--brand-blue-rgb) / 0.4), rgb(var(--brand-dark-blue-rgb) / 0.35) 55%, transparent 76%);
 }
 
 .pills {
@@ -214,7 +211,7 @@
 }
 
 .typical::after {
-  background: radial-gradient(60% 50% at 40% 40%, var(--brand-steel-soft), transparent 70%);
+  background: radial-gradient(60% 50% at 40% 40%, var(--brand-blue), transparent 70%);
 }
 
 .pill {
@@ -249,36 +246,42 @@
   }
 }
 
+/* tones: what a pill looks like depends on which panel it floats in */
 .glassDark {
-  color: var(--brand-ivory);
-  background: rgb(79 100 117 / 0.5);
-  box-shadow:
-    inset 0 0 0 1px rgb(251 251 247 / 0.16),
-    0 14px 30px -16px rgb(15 26 34 / 0.6);
+  color: var(--color-text);
+  background: rgb(var(--brand-navy-rgb) / 0.07);
+  box-shadow: inset 0 0 0 1px rgb(var(--brand-navy-rgb) / 0.1);
 }
 
 .glassLight {
   color: var(--color-ink);
-  background: rgb(251 251 247 / 0.72);
+  background: var(--brand-white);
   box-shadow:
-    inset 0 0 0 1px rgb(251 251 247 / 0.55),
-    0 14px 30px -16px rgb(15 26 34 / 0.35);
+    inset 0 0 0 1px var(--brand-hairline),
+    0 14px 30px -18px rgb(var(--brand-navy-rgb) / 0.28);
 }
 
 .accent {
-  color: var(--brand-navy);
-  background: var(--color-accent);
+  color: var(--brand-white);
+  background: var(--brand-blue);
   box-shadow:
-    inset 0 1px 0 rgb(243 223 195 / 0.55),
-    0 16px 32px -14px rgb(126 94 66 / 0.55);
+    inset 0 1px 0 rgb(var(--brand-white-rgb) / 0.28),
+    0 16px 32px -14px rgb(var(--brand-blue-rgb) / 0.65);
 }
 
 .ink {
-  color: var(--brand-ivory);
-  background: var(--brand-navy);
+  color: var(--brand-white);
+  background: rgb(var(--brand-white-rgb) / 0.08);
   box-shadow:
-    inset 0 0 0 1px rgb(251 251 247 / 0.1),
-    0 16px 32px -14px rgb(15 26 34 / 0.6);
+    inset 0 0 0 1px rgb(var(--brand-white-rgb) / 0.2),
+    0 16px 32px -14px rgb(var(--brand-navy-rgb) / 0.7);
+}
+
+/* on the navy panel the light pills are white cards and carry navy type */
+.broAi .glassLight {
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--brand-white-rgb) / 0.4),
+    0 16px 34px -16px rgb(var(--brand-navy-rgb) / 0.8);
 }
 
 /* ---- tablet: the pair still pins side by side, on a stage capped so the pills fill it ---- */

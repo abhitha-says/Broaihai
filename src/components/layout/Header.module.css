@@ -52,9 +52,33 @@
 }
 
 .link {
+  position: relative;
   display: block;
   text-align: center;
   transition: color var(--spring-soft-duration) var(--spring-soft);
+}
+
+/* the page you are on carries a short electric-blue bar beneath it */
+.link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-blue);
+  scale: 0 1;
+  translate: -50% 0;
+  transition: scale var(--spring-soft-duration) var(--spring-soft);
+}
+
+.link[aria-current='page'] {
+  color: var(--color-ink);
+}
+
+.link[aria-current='page']::after {
+  scale: 1 1;
 }
 
 @media (hover: hover) {
@@ -108,7 +132,7 @@
     display: block;
     width: 100vw;
     height: 100lvh;
-    background: rgb(251 251 247 / 0.8);
+    background: rgb(var(--brand-white-rgb) / 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     opacity: 0;
@@ -135,7 +159,7 @@
     background: var(--color-white);
     box-shadow:
       0 0 0 1px var(--color-ghost),
-      0 30px 60px -30px rgb(15 26 34 / 0.38);
+      0 30px 60px -30px rgb(var(--brand-navy-rgb) / 0.38);
     clip-path: inset(0 0 100% 0 round 20px);
     translate: 0 -10px;
     overflow: hidden;

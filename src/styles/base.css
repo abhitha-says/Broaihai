@@ -13,7 +13,7 @@ body {
 body {
   background: var(--color-white);
   color: var(--color-black);
-  -webkit-tap-highlight-color: rgb(185 156 129 / 0.22);
+  -webkit-tap-highlight-color: rgb(var(--brand-blue-rgb) / 0.22);
   font-family: var(--font-sans);
   font-feature-settings: var(--font-features);
   font-size: 12px;
@@ -22,7 +22,7 @@ body {
 }
 
 ::selection {
-  background: var(--brand-champagne-light);
+  background: var(--brand-blue-glow);
   color: var(--brand-navy);
 }
 

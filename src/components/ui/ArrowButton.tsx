@@ -5,15 +5,16 @@ import styles from './ArrowButton.module.css'
 type Props = {
   href: string
   children: string
-  /** The resting fill: grey on white sections, white on grey cards. */
+  /** `surface` (the default) is the primary button; `white` is the secondary one. */
   tone?: 'surface' | 'white'
   className?: string
   onClick?: () => void
 }
 
 /**
- * The site's one call-to-action. On hover the orange square behind the arrow
- * grows to fill the button and the label turns white.
+ * The site's one call-to-action. The default is the primary (deep navy, a small electric-blue
+ * square behind the arrow that grows to fill the button on hover); `tone="white"` is the
+ * secondary (white, a navy hairline, a faint blue wash on hover).
  */
 export function ArrowButton({ href, children, tone = 'surface', className, onClick }: Props) {
   const external = /^https?:/.test(href)

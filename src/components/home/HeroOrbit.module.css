@@ -1,0 +1,205 @@
+/*
+ * The orbiting cards. HeroOrbit.tsx writes, per frame: each card's transform, opacity, blur and
+ * stacking, and --hi (0..1, how near the front it is), which lifts the blue edge. It also writes
+ * --cw / --ch / --rx / --ry on the stage when it is measured, so every size below scales from the
+ * card's width: the same card reads at 410px and at 190px.
+ *
+ * Navy carries the card, white is its type, soft blue its second line, and the electric blue is
+ * only ever the number, one mark in the drawing, and the edge that wakes as the card comes round.
+ */
+.stage {
+  --cw: 380px;
+  --ch: 240px;
+  --rx: 210px;
+  --ry: 55px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.3 / 1;
+}
+
+.dish {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+/* ambient digital light, felt before it is seen */
+.glow {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 92%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  translate: -50% -50%;
+  background: radial-gradient(circle, rgb(var(--brand-blue-rgb) / 0.11) 0%, rgb(var(--brand-dark-blue-rgb) / 0.05) 42%, transparent 68%);
+  pointer-events: none;
+}
+
+/* the path the cards travel, drawn as a hairline */
+.ring {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: calc(var(--rx) * 2);
+  height: calc(var(--ry) * 2);
+  margin: calc(var(--ry) * -1) 0 0 calc(var(--rx) * -1);
+  border: 1px solid rgb(var(--brand-blue-rgb) / 0.24);
+  border-radius: 50%;
+  rotate: -0.07rad;
+  pointer-events: none;
+}
+
+.dot {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+  box-shadow:
+    0 0 0 5px rgb(var(--brand-blue-rgb) / 0.14),
+    0 0 18px rgb(var(--brand-blue-rgb) / 0.55);
+  pointer-events: none;
+}
+
+.card {
+  --hi: 0;
+  --fog: 0;
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: var(--cw);
+  height: var(--ch);
+  margin: calc(var(--ch) / -2) 0 0 calc(var(--cw) / -2);
+  padding: calc(var(--cw) * 0.07);
+  border-radius: calc(var(--cw) * 0.065);
+  overflow: hidden;
+  opacity: 0; /* the orbit brings each card in; until it does (or without script) none shows */
+  color: var(--brand-white);
+  background:
+    radial-gradient(95% 85% at 0% 0%, rgb(var(--brand-dark-blue-rgb) / 0.9) 0%, transparent 66%),
+    linear-gradient(162deg, var(--brand-navy-raised) 0%, var(--brand-navy) 74%);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--brand-blue) calc(var(--hi) * 62%), rgb(var(--brand-white-rgb) / 0.1)),
+    0 calc(var(--cw) * 0.1) calc(var(--cw) * 0.2) calc(var(--cw) * -0.11) rgb(var(--brand-navy-rgb) / calc(0.3 + 0.32 * var(--hi))),
+    0 0 calc(var(--cw) * 0.16) calc(var(--cw) * -0.05) rgb(var(--brand-blue-rgb) / calc(0.42 * var(--hi)));
+  will-change: transform, opacity, filter;
+}
+
+/* atmospheric depth: the far cards are washed toward the page, the near one is clear */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--brand-white);
+  opacity: var(--fog, 0);
+  pointer-events: none;
+}
+
+/* a hairline of blue light along the top edge: it wakes as the card comes forward */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(var(--cw) * 0.07) auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(var(--brand-blue-rgb) / calc(0.95 * var(--hi))), transparent);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.number {
+  font-family: var(--font-caption);
+  font-size: max(11px, calc(var(--cw) * 0.036));
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-blue-glow);
+}
+
+.glyph {
+  width: calc(var(--cw) * 0.125);
+  height: calc(var(--cw) * 0.125);
+  stroke: rgb(var(--brand-white-rgb) / 0.72);
+}
+
+.glyph .fill {
+  fill: var(--brand-blue-glow);
+  stroke: var(--brand-blue-glow);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--cw) * 0.024);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-feature-settings: var(--font-features);
+  font-size: max(15px, calc(var(--cw) * 0.07));
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--brand-white);
+}
+
+.line {
+  max-width: 78%;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-feature-settings: var(--font-features);
+  font-size: max(12px, calc(var(--cw) * 0.045));
+  font-weight: 500;
+  line-height: 1.32;
+  color: var(--brand-blue-soft);
+  text-wrap: balance;
+}
+
+/* which card is in front: five ticks, the lit one longer and blue */
+.progress {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  display: flex;
+  gap: 8px;
+  translate: -50% 0;
+}
+
+.tick {
+  width: 16px;
+  height: 3px;
+  border-radius: 3px;
+  background: rgb(var(--brand-navy-rgb) / 0.16);
+  transition:
+    width 0.5s var(--spring-soft),
+    background-color 0.4s ease;
+}
+
+.tick[data-on] {
+  width: 34px;
+  background: var(--brand-blue);
+}
+
+@media (max-width: 767.98px) {
+  .stage {
+    aspect-ratio: 1.02 / 1;
+  }
+
+  .glow {
+    width: 120%;
+  }
+}

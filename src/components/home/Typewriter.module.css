@@ -46,8 +46,8 @@
   width: max(2px, 0.075em);
   height: 1.08em;
   border-radius: 2px;
-  background: var(--brand-champagne-deep);
-  box-shadow: 0 0 14px rgb(126 94 66 / 0.4);
+  background: var(--brand-blue);
+  box-shadow: 0 0 14px rgb(var(--brand-blue-rgb) / 0.4);
   /* the marker is re-created on every keystroke, so the bar stays solid while typing */
   animation: blink 1.05s steps(1) infinite;
 }

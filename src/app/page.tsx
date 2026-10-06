@@ -4,6 +4,8 @@ import { WordLine } from '@/components/home/WordLine'
 import { Impact } from '@/components/home/Impact'
 import { Services } from '@/components/home/Services'
 import { Capabilities } from '@/components/home/Capabilities'
+import { Process } from '@/components/home/Process'
+import { WhatWeBuild } from '@/components/home/WhatWeBuild'
 import { Stack } from '@/components/home/Stack'
 import { ProjectShowcase } from '@/components/projects/ProjectShowcase'
 import { FaqSection } from '@/components/faq/FaqSection'
@@ -18,6 +20,8 @@ export default function HomePage() {
       <WordLine id="scroll-line1" words={wordLines.first} direction="left" />
       <Impact />
       <WordLine id="scroll-line2" words={wordLines.second} direction="right" />
+      <WhatWeBuild />
+      <Process />
       <Services />
       <Capabilities />
       <ProjectShowcase
